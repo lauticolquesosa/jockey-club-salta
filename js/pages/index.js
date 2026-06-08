@@ -1,6 +1,6 @@
 /* Home — manifiesto scrollytelling (stage pinned + líneas por scroll) */
 (() => {
-  const lines = [...document.querySelectorAll(".line")];
+  const lines = [...document.querySelectorAll("#lines .line")];
   const frames = [...document.querySelectorAll(".stage-bg .frame")];
   const mani = document.getElementById("manifiesto");
   const dotsWrap = document.getElementById("dots");

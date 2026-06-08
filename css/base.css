@@ -112,3 +112,13 @@ footer.foot{background:#B02A28;color:rgba(255,255,255,.86);padding:60px 0 38px}
 
 /* ===== Scroll progress bar ===== */
 .progress{position:fixed;top:0;left:0;height:3px;background:var(--rojo);z-index:65;width:0;transition:width .1s linear}
+
+/* ===== Ajustes táctiles en mobile (tap targets cómodos) ===== */
+@media(max-width:767px){
+  .icon-btn{min-height:44px;padding:11px 16px}
+  .brand{min-height:44px}
+  .close-btn{min-height:44px;padding:11px 18px}
+  .foot ul li{padding:2px 0}
+  .foot ul li a{display:inline-flex;align-items:center;min-height:42px;padding:6px 2px}
+  .foot .copy{gap:6px}
+}
