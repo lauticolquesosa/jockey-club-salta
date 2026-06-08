@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jockey Club de Salta · Las camadas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root{
+    --rojo:#B02A28;--rojo-deep:#9A2220;--vino:#B02A28;--vino-900:#B02A28;--vino-bg:#B02A28;
+    --blanco:#FFFFFF;--crema:#F4EBDD;--tinta:#2A2320;--tinta-60:#6a605a;--ocre:#C8862B;--ocre-2:#E9A24A;
+    --shadow-warm:0 24px 60px -28px rgba(0,0,0,.6);
+    --ease:cubic-bezier(.2,.7,.2,1);--maxw:1280px;--pad:clamp(20px,5vw,72px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--vino-bg);color:#fff;font-family:"Archivo",system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--ocre);color:var(--vino-bg)}
+  h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;font-weight:520;line-height:1;letter-spacing:-.02em;font-optical-sizing:auto}
+  .mono{font-family:"JetBrains Mono",monospace}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+  /* reveal: translateY only (opacity stays 1) */
+  html.js .reveal{transform:translateY(16px);transition:transform 1s var(--ease)}
+  html.js .reveal.in{transform:none}
+  html.js .reveal.d1{transition-delay:.1s}html.js .reveal.d2{transition-delay:.2s}html.js .reveal.d3{transition-delay:.3s}
+  @media(prefers-reduced-motion:reduce){html.js .reveal{transform:none !important;transition:none}}
+
+  /* ===== TOP NAV ===== */
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(18px,4vw,42px);transition:background .5s var(--ease),box-shadow .5s var(--ease),padding .5s var(--ease)}
+  .topbar.solid{background:rgba(28,5,4,.85);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(255,255,255,.06);padding-top:11px;padding-bottom:11px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand img{width:32px;height:32px;background:#fff;border-radius:7px;padding:3px}
+  .brand b{font-family:"Archivo";font-weight:700;font-size:13px;letter-spacing:.03em;color:#fff}
+  .brand .tag{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6);border-left:1px solid rgba(255,255,255,.2);padding-left:11px}
+  @media(max-width:640px){.brand .tag{display:none}}
+  .nav-actions{display:flex;align-items:center;gap:12px}
+  .icon-btn{display:inline-flex;align-items:center;gap:9px;font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(255,255,255,.35);color:#fff;background:transparent;border-radius:100px;padding:9px 16px;cursor:pointer;transition:.3s var(--ease)}
+  .icon-btn:hover{background:var(--ocre);color:var(--vino-bg);border-color:var(--ocre)}
+  .menu-btn .dots{display:flex;gap:3px}.menu-btn .dots i{width:4px;height:4px;border-radius:50%;background:currentColor;display:block}
+  .snd .eq{display:flex;align-items:flex-end;gap:2.5px;height:13px}.snd .eq i{width:2.5px;background:currentColor;height:30%;border-radius:2px}
+  .snd.on .eq i{animation:eq .9s ease-in-out infinite}
+  .snd.on .eq i:nth-child(2){animation-delay:.15s}.snd.on .eq i:nth-child(3){animation-delay:.3s}.snd.on .eq i:nth-child(4){animation-delay:.45s}
+  @keyframes eq{0%,100%{height:25%}50%{height:100%}}
+  @media(max-width:520px){.snd span:last-child{display:none}}
+
+  /* ===== OVERLAY MENU ===== */
+  .overlay{position:fixed;inset:0;z-index:70;background:var(--vino-900);transform:translateY(-100%);transition:transform .7s var(--ease);display:flex;flex-direction:column;overflow-y:auto}
+  .overlay.open{transform:none}
+  .overlay-top{display:flex;align-items:center;justify-content:space-between;padding:18px clamp(18px,4vw,42px)}
+  .close-btn{font-family:"JetBrains Mono";font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.4);border-radius:100px;padding:9px 18px;cursor:pointer;transition:.3s var(--ease)}
+  .close-btn:hover{background:var(--rojo);border-color:var(--rojo)}
+  .overlay-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(16px,3vw,36px) clamp(18px,4vw,42px)}
+  .ov-item{display:flex;align-items:center;gap:clamp(16px,3vw,34px);padding:clamp(11px,1.5vw,18px) 8px;border-top:1px solid rgba(255,255,255,.12);cursor:pointer;transition:.4s var(--ease)}
+  .ov-item:last-child{border-bottom:1px solid rgba(255,255,255,.12)}
+  .ov-item.active{background:rgba(255,255,255,.05)}
+  .ov-item .thumb{width:clamp(54px,7vw,88px);height:clamp(40px,5vw,60px);border-radius:9px;object-fit:cover;flex-shrink:0;filter:grayscale(.4) brightness(.85);transition:.45s var(--ease)}
+  .ov-item .swt{width:clamp(54px,7vw,88px);height:clamp(40px,5vw,60px);border-radius:9px;flex-shrink:0;background:radial-gradient(circle at 60% 30%,#B02A28,#B02A28)}
+  .ov-item .lab{font-family:"Fraunces";font-size:clamp(26px,4.6vw,54px);font-weight:480;color:#fff;letter-spacing:-.02em;line-height:1;transition:.4s var(--ease)}
+  .ov-item .desc{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.1em;color:rgba(255,255,255,.5);text-transform:uppercase;margin-left:auto;text-align:right;display:none}
+  @media(min-width:900px){.ov-item .desc{display:block}}
+  .ov-item .idx{font-family:"JetBrains Mono";font-size:12px;color:var(--ocre);width:30px;flex-shrink:0}
+  .ov-item:hover{padding-left:24px}.ov-item:hover .lab{color:var(--ocre)}.ov-item:hover .thumb{filter:none;transform:scale(1.05)}
+
+  /* ===== HERO ===== */
+  .phero{position:relative;padding:clamp(120px,17vw,200px) 0 clamp(40px,5vw,68px);overflow:hidden}
+  .phero::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 0%,rgba(154,34,32,.5),transparent 65%);pointer-events:none}
+  .phero .wrap{position:relative;z-index:2}
+  .phero .eye{font-family:"JetBrains Mono";font-size:12.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--ocre);margin-bottom:24px}
+  .phero h1{font-size:clamp(54px,12.5vw,172px);font-weight:520;line-height:.92;letter-spacing:-.035em;text-wrap:balance;color:#fff}
+  .phero h1 em{font-style:italic;font-weight:380;color:var(--ocre)}
+  .phero .sub{margin-top:clamp(22px,3vw,34px);max-width:62ch;font-size:clamp(17px,1.9vw,21px);color:rgba(255,255,255,.78);font-weight:380}
+  .phero .meta{margin-top:34px;display:flex;gap:34px;flex-wrap:wrap;font-family:"JetBrains Mono";font-size:12px;letter-spacing:.05em;color:rgba(255,255,255,.6)}
+  .phero .meta span b{color:var(--ocre);font-weight:600}
+  /* drifting bg stars */
+  .skyy{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  .skyy span{position:absolute;background:#fff;border-radius:50%}
+
+  /* ===== CONSTELLATION ===== */
+  .constellation-wrap{position:relative;padding:clamp(30px,5vw,60px) 0 clamp(50px,7vw,90px)}
+  .const-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(28px,4vw,50px);flex-wrap:wrap}
+  .const-head h2{font-size:clamp(26px,3.4vw,42px);font-weight:480;letter-spacing:-.02em;color:#fff;max-width:22ch;line-height:1.05}
+  .const-head h2 em{font-style:italic;color:var(--ocre)}
+  .const-head .hint{font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:10px}
+  .const-head .hint::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ocre);box-shadow:0 0 12px 3px rgba(233,162,74,.5);animation:pulse 2s var(--ease) infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 8px 2px rgba(233,162,74,.5)}50%{box-shadow:0 0 18px 5px rgba(233,162,74,.7)}}
+
+  .constellation{position:relative;height:clamp(420px,62vh,640px);border:1px solid rgba(255,255,255,.07);border-radius:18px;background:radial-gradient(120% 100% at 30% 20%,rgba(176,42,40,.35),transparent 60%),radial-gradient(80% 80% at 80% 80%,rgba(176,42,40,.15),transparent 65%),#B02A28;overflow:hidden}
+  .constellation .bgstars span{position:absolute;background:#fff;border-radius:50%;opacity:.4}
+  .constellation .links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .constellation .links line{stroke:rgba(255,255,255,.1);stroke-width:1;vector-effect:non-scaling-stroke;transition:stroke .4s var(--ease)}
+  .constellation .links line.hot{stroke:rgba(233,162,74,.5);stroke-width:1.3}
+  .cnode{position:absolute;transform:translate(-50%,-50%);background:transparent;border:none;color:inherit;cursor:pointer;padding:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .cnode .dot{width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 10px 1px rgba(255,255,255,.5);transition:transform .35s var(--ease),background .35s var(--ease),box-shadow .35s var(--ease)}
+  .cnode.sm .dot{width:8px;height:8px}.cnode.md .dot{width:12px;height:12px}.cnode.lg .dot{width:16px;height:16px}.cnode.xl .dot{width:22px;height:22px}
+  .cnode .lab{font-family:"Fraunces";font-size:18px;color:#fff;opacity:.5;font-weight:520;letter-spacing:.01em;transition:.35s var(--ease);white-space:nowrap;pointer-events:none}
+  .cnode .nm{font-family:"JetBrains Mono";font-size:10px;letter-spacing:.1em;color:rgba(255,255,255,.55);text-transform:uppercase;opacity:0;transform:translateY(-4px);transition:.35s var(--ease);white-space:nowrap;pointer-events:none}
+  .cnode:hover .dot,.cnode:focus-visible .dot{background:var(--ocre);transform:scale(1.45);box-shadow:0 0 26px 6px rgba(233,162,74,.55)}
+  .cnode:hover .lab,.cnode:focus-visible .lab{color:var(--ocre);opacity:1}
+  .cnode:hover .nm,.cnode:focus-visible .nm{opacity:.9;transform:none}
+  .cnode.active .dot{background:var(--ocre);transform:scale(1.7);box-shadow:0 0 40px 10px rgba(233,162,74,.7),0 0 0 3px rgba(233,162,74,.2)}
+  .cnode.active .lab{color:var(--ocre);opacity:1;font-weight:580}
+  .cnode.active .nm{opacity:1;transform:none;color:var(--ocre-2)}
+  .cnode:focus-visible{outline:none}
+
+  /* mobile year strip */
+  .yearstrip{display:none;gap:10px;overflow-x:auto;padding:6px 4px 14px;margin:0 -4px;scrollbar-width:none}
+  .yearstrip::-webkit-scrollbar{display:none}
+  .yearchip{flex-shrink:0;border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:10px 16px;color:#fff;background:rgba(255,255,255,.04);font-family:"JetBrains Mono";font-size:12px;letter-spacing:.06em;cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:flex-start;min-width:120px;transition:.3s var(--ease)}
+  .yearchip b{font-family:"Fraunces";font-size:20px;font-weight:520;color:#fff;letter-spacing:-.01em}
+  .yearchip span{font-size:10.5px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.08em}
+  .yearchip.active{background:var(--ocre);border-color:var(--ocre);color:var(--vino-900)}
+  .yearchip.active b,.yearchip.active span{color:var(--vino-900)}
+  @media(max-width:760px){
+    .constellation{display:none}
+    .yearstrip{display:flex}
+  }
+
+  /* ===== FICHA VIVA ===== */
+  .ficha{padding:clamp(60px,9vw,110px) 0;background:linear-gradient(180deg,var(--vino-bg),#B02A28);border-top:1px solid rgba(255,255,255,.06)}
+  .ficha-head{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(18px,3vw,36px);align-items:end;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:clamp(24px,3.5vw,40px);margin-bottom:clamp(34px,5vw,56px)}
+  @media(max-width:680px){.ficha-head{grid-template-columns:1fr;align-items:start}.ficha-head .ficha-cta{justify-self:start}}
+  .ficha-year{font-family:"Fraunces";font-size:clamp(70px,12vw,156px);font-weight:300;color:var(--ocre);line-height:.85;letter-spacing:-.04em;transition:color .5s var(--ease)}
+  .ficha-info .eye{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:10px}
+  .ficha-name{font-size:clamp(28px,4vw,52px);font-weight:500;color:#fff;letter-spacing:-.02em;line-height:1.02}
+  .ficha-name em{font-style:italic;color:var(--ocre)}
+  .ficha-sub{margin-top:12px;color:rgba(255,255,255,.7);font-size:16px;max-width:50ch}
+  .ficha-cta{display:inline-flex;align-items:center;gap:9px;background:transparent;border:1px solid rgba(233,162,74,.5);color:var(--ocre);font-family:"JetBrains Mono";font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:10px 16px;border-radius:100px;cursor:pointer;transition:.3s var(--ease)}
+  .ficha-cta:hover{background:var(--ocre);color:var(--vino-900)}
+
+  .ficha-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(20px,3vw,38px)}
+  @media(max-width:880px){.ficha-grid{grid-template-columns:1fr}}
+  .photos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;grid-template-rows:auto auto}
+  .photos > *:first-child{grid-column:1/-1}
+  .frame{position:relative;border-radius:12px;overflow:hidden;background:#B02A28;aspect-ratio:4/3;box-shadow:var(--shadow-warm)}
+  .frame.tall{aspect-ratio:3/4}
+  .frame img{width:100%;height:100%;object-fit:cover}
+  .frame .cap{position:absolute;left:0;right:0;bottom:0;padding:11px 14px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff;font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.06em;z-index:2}
+  /* placeholder dark */
+  .ph{position:relative;border-radius:12px;border:1px dashed rgba(255,255,255,.2);background:repeating-linear-gradient(135deg,#B02A28,#B02A28 13px,#B02A28 13px,#B02A28 26px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,.55);aspect-ratio:4/3;text-align:center;padding:14px}
+  .ph.tall{aspect-ratio:3/4}.ph.wide{aspect-ratio:16/9}
+  .ph .ic{width:28px;height:28px;border:1.5px solid rgba(255,255,255,.4);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(255,255,255,.55)}
+  .ph .tag{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.1em;color:rgba(255,255,255,.7)}
+  .ph .hint{font-size:11px;color:rgba(255,255,255,.5);max-width:22ch}
+
+  .anec h3{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ocre);margin-bottom:18px;font-weight:500}
+  .anec-list{display:flex;flex-direction:column;gap:18px}
+  .anec-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px 22px;border-left:3px solid var(--ocre)}
+  .anec-item .q{font-family:"Fraunces";font-style:italic;font-size:clamp(17px,2vw,22px);color:#fff;line-height:1.35}
+  .anec-item .a{margin-top:14px;font-family:"JetBrains Mono";font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+
+  /* dónde están hoy */
+  .hoy{margin-top:clamp(40px,6vw,70px)}
+  .hoy h3{font-family:"Fraunces";font-size:clamp(22px,2.8vw,32px);font-weight:500;color:#fff;letter-spacing:-.01em;margin-bottom:6px}
+  .hoy h3 em{font-style:italic;color:var(--ocre)}
+  .hoy .lab{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ocre);margin-bottom:14px}
+  .grid-hoy{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+  .hoy-card{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:20px;display:flex;gap:14px;align-items:center;transition:.3s var(--ease)}
+  .hoy-card:hover{background:rgba(233,162,74,.08);border-color:rgba(233,162,74,.3)}
+  .avatar{width:48px;height:48px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:"Fraunces";font-weight:500;font-size:16px;color:#fff;background:linear-gradient(135deg,#B02A28,#B02A28);border:1.5px solid rgba(233,162,74,.3);letter-spacing:.02em}
+  .hoy-card .ifo{min-width:0}
+  .hoy-card .nm{font-family:"Archivo";font-size:14px;font-weight:600;color:#fff;line-height:1.2}
+  .hoy-card .r{margin-top:3px;font-size:12.5px;color:rgba(255,255,255,.6)}
+
+  /* ===== PAGER ===== */
+  .pager{border-top:1px solid rgba(255,255,255,.1);display:grid;grid-template-columns:1fr 1fr;background:#B02A28}
+  .pager a{padding:clamp(28px,4vw,48px) var(--pad);transition:background .4s var(--ease);display:flex;flex-direction:column;gap:8px}
+  .pager a:hover{background:rgba(255,255,255,.04)}
+  .pager a.next{text-align:right;border-left:1px solid rgba(255,255,255,.1)}
+  .pager .dir{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+  .pager .ttl{font-family:"Fraunces";font-size:clamp(24px,3.4vw,40px);font-weight:500;letter-spacing:-.01em;color:#fff}
+  .pager a:hover .ttl{color:var(--ocre)}
+
+  /* ===== FOOTER ===== */
+  footer.foot{background:#B02A28;color:rgba(255,255,255,.86);padding:60px 0 38px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+  @media(max-width:860px){.foot-grid{grid-template-columns:1fr 1fr;gap:30px}}
+  @media(max-width:520px){.foot-grid{grid-template-columns:1fr}}
+  .foot .lg{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .foot .lg img{width:40px;height:40px;background:#fff;border-radius:8px;padding:5px}
+  .foot .lg b{font-family:"Fraunces";font-size:18px;font-weight:520;color:#fff}
+  .foot p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.6)}
+  .foot h5{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ocre);margin-bottom:14px}
+  .foot ul{list-style:none}.foot ul li{padding:5px 0;font-size:14px;color:rgba(255,255,255,.72)}
+  .foot ul li a:hover{color:#fff;text-decoration:underline}
+  .foot .cta{margin-top:18px;display:inline-flex;align-items:center;gap:10px;background:var(--rojo);color:#fff;font-family:"Archivo";font-weight:600;font-size:14px;border-radius:100px;padding:11px 20px;transition:.35s var(--ease)}
+  .foot .cta:hover{background:var(--rojo-deep)}
+  .foot .copy{border-top:1px solid rgba(255,255,255,.1);margin-top:42px;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:"JetBrains Mono";font-size:11px;color:rgba(255,255,255,.4)}
+
+  /* scroll progress */
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--ocre);z-index:65;width:0;transition:width .1s linear}
+</style>
+</head>
+<body id="top">
+<div class="progress" id="progress"></div>
+
+<!-- ===== TOP NAV ===== -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html"><img src="assets/logo-jcs.png" alt="Escudo JCS" /><b>JOCKEY CLUB DE SALTA</b><span class="tag">02 · Las camadas</span></a>
+  <div class="nav-actions">
+    <button class="icon-btn snd" id="snd" role="switch" aria-checked="false"><span class="eq"><i></i><i></i><i></i><i></i></span><span>Sonido</span></button>
+    <button class="icon-btn menu-btn" id="openMenu">Menú <span class="dots"><i></i><i></i><i></i></span></button>
+  </div>
+</header>
+
+<!-- ===== OVERLAY MENU ===== -->
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="overlay-top">
+    <a class="brand" href="index.html"><img src="assets/logo-jcs.png" alt="JCS" style="width:32px;height:32px;background:#fff;border-radius:7px;padding:3px" /><b>JOCKEY CLUB DE SALTA</b></a>
+    <button class="close-btn" id="closeMenu">Cerrar ✕</button>
+  </div>
+  <div class="overlay-body">
+    <a class="ov-item" href="historia-viva.html"><span class="idx">01</span><img class="thumb" src="assets/plantel-m15.png" alt="" /><span class="lab">Historia viva</span><span class="desc">1965 → hoy</span></a>
+    <a class="ov-item active" href="#"><span class="idx">02</span><span class="swt"></span><span class="lab">Las camadas</span><span class="desc">La constelación</span></a>
+    <a class="ov-item" href="los-espacios.html"><span class="idx">03</span><img class="thumb" src="assets/casa-club.png" alt="" /><span class="lab">Los espacios</span><span class="desc">Cancha 1 · La casa roja</span></a>
+    <a class="ov-item" href="vida-social.html"><span class="idx">04</span><img class="thumb" src="assets/tercer-tiempo.png" alt="" /><span class="lab">Vida social</span><span class="desc">El tercer tiempo</span></a>
+    <a class="ov-item" href="las-disciplinas.html"><span class="idx">05</span><img class="thumb" src="assets/golf.png" alt="" /><span class="lab">Disciplinas</span><span class="desc">Seis deportes</span></a>
+    <a class="ov-item" href="sentir-el-rojo.html"><span class="idx">06</span><img class="thumb" src="assets/banderazo.png" alt="" /><span class="lab">Sentir el Rojo</span><span class="desc">La experiencia</span></a>
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="phero" data-screen-label="Camadas · Hero">
+  <div class="skyy" id="skyyHero"></div>
+  <div class="wrap">
+    <div class="eye">02 · La constelación</div>
+    <h1>Las <em>camadas.</em></h1>
+    <p class="sub">Cada promoción es una estrella propia. Brillan distinto, pero pertenecen al mismo cielo. Tocá una y se enciende: fotos, giras, apodos y dónde está hoy cada uno.</p>
+    <div class="meta">
+      <span><b>61</b> años de cantera</span>
+      <span><b>+1.500</b> jugadores</span>
+      <span><b>8</b> camadas destacadas</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONSTELLATION ===== -->
+<section class="constellation-wrap" data-screen-label="Camadas · Constelación">
+  <div class="wrap">
+    <div class="const-head">
+      <h2>Tocá una <em>estrella.</em></h2>
+      <div class="hint">Cada nodo es una promoción</div>
+    </div>
+
+    <!-- Desktop constellation -->
+    <div class="constellation" id="constellation">
+      <div class="bgstars" id="bgstars"></div>
+      <svg class="links" id="links" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <line x1="10" y1="68" x2="22" y2="32" data-pair="2002-2005"/>
+        <line x1="22" y1="32" x2="36" y2="58" data-pair="2005-2008"/>
+        <line x1="36" y1="58" x2="48" y2="22" data-pair="2008-2012"/>
+        <line x1="48" y1="22" x2="60" y2="50" data-pair="2012-2015"/>
+        <line x1="60" y1="50" x2="70" y2="28" data-pair="2015-2018"/>
+        <line x1="70" y1="28" x2="82" y2="62" data-pair="2018-2022"/>
+        <line x1="82" y1="62" x2="90" y2="40" data-pair="2022-2026"/>
+      </svg>
+      <button class="cnode lg" data-year="2002" style="left:10%;top:68%"><span class="dot"></span><span class="lab">'02</span><span class="nm">Los Pumas de bolsillo</span></button>
+      <button class="cnode md" data-year="2005" style="left:22%;top:32%"><span class="dot"></span><span class="lab">'05</span><span class="nm">La gira al sur</span></button>
+      <button class="cnode md" data-year="2008" style="left:36%;top:58%"><span class="dot"></span><span class="lab">'08</span><span class="nm">Los del barro</span></button>
+      <button class="cnode lg" data-year="2012" style="left:48%;top:22%"><span class="dot"></span><span class="lab">'12</span><span class="nm">Hermanos chicos</span></button>
+      <button class="cnode md" data-year="2015" style="left:60%;top:50%"><span class="dot"></span><span class="lab">'15</span><span class="nm">Las medallas</span></button>
+      <button class="cnode sm" data-year="2018" style="left:70%;top:28%"><span class="dot"></span><span class="lab">'18</span><span class="nm">Los del baile</span></button>
+      <button class="cnode md" data-year="2022" style="left:82%;top:62%"><span class="dot"></span><span class="lab">'22</span><span class="nm">La promo del banderazo</span></button>
+      <button class="cnode xl" data-year="2026" style="left:90%;top:40%"><span class="dot"></span><span class="lab">'26</span><span class="nm">Los campeones</span></button>
+    </div>
+
+    <!-- Mobile year strip -->
+    <div class="yearstrip" id="yearstrip">
+      <button class="yearchip" data-year="2002"><b>'02</b><span>Los Pumas de bolsillo</span></button>
+      <button class="yearchip" data-year="2005"><b>'05</b><span>La gira al sur</span></button>
+      <button class="yearchip" data-year="2008"><b>'08</b><span>Los del barro</span></button>
+      <button class="yearchip" data-year="2012"><b>'12</b><span>Hermanos chicos</span></button>
+      <button class="yearchip" data-year="2015"><b>'15</b><span>Las medallas</span></button>
+      <button class="yearchip" data-year="2018"><b>'18</b><span>Los del baile</span></button>
+      <button class="yearchip" data-year="2022"><b>'22</b><span>Banderazo</span></button>
+      <button class="yearchip" data-year="2026"><b>'26</b><span>Los campeones</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FICHA VIVA ===== -->
+<section class="ficha" id="ficha" data-screen-label="Camadas · Ficha viva">
+  <div class="wrap">
+    <div class="ficha-head">
+      <div class="ficha-year" id="fYear">2026</div>
+      <div class="ficha-info">
+        <div class="eye" id="fEye">Camada · Hoy</div>
+        <h2 class="ficha-name" id="fName">Los <em>campeones.</em></h2>
+        <p class="ficha-sub" id="fSub">34 jugadores · Campeón WERE M15 · 2026</p>
+      </div>
+      <button class="ficha-cta" id="randomBtn">↺ Camada al azar</button>
+    </div>
+
+    <div class="ficha-grid">
+      <div class="photos" id="fPhotos"></div>
+      <div class="anec">
+        <h3>Anécdotas que sobreviven</h3>
+        <div class="anec-list" id="fAnec"></div>
+      </div>
+    </div>
+
+    <div class="hoy">
+      <div class="lab">Dónde están hoy</div>
+      <h3>La camada <em>sigue jugando.</em></h3>
+      <div class="grid-hoy" id="fHoy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAGER ===== -->
+<nav class="pager">
+  <a href="historia-viva.html"><span class="dir">← Volver · 01</span><span class="ttl">Historia viva</span></a>
+  <a class="next" href="los-espacios.html"><span class="dir">Siguiente · 03 →</span><span class="ttl">Los espacios</span></a>
+</nav>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="lg"><img src="assets/logo-jcs.png" alt="JCS" /><b>Jockey Club de Salta</b></div>
+        <p>Más que un club, una familia. El Rojo y Blanco desde 1965.</p>
+        <a class="cta" href="#">Sumate · Hacete socio →</a>
+      </div>
+      <div><h5>Sede Limache</h5><ul><li>Ruta 51 km 1</li><li>Av. Kennedy s/n</li><li>Salta, Argentina</li></ul></div>
+      <div><h5>Anexo Las Costas</h5><ul><li>San Lorenzo</li><li>Tel · WhatsApp</li><li>hola@jockeysalta.ar</li></ul></div>
+      <div><h5>Seguinos</h5><ul><li><a href="#">@jockeyclubsalta</a></li><li><a href="#">@jcs_hockey</a></li></ul></div>
+    </div>
+    <div class="copy"><span>© 2026 Jockey Club de Salta</span><span>02 · Las camadas · diseño de alta fidelidad</span></div>
+  </div>
+</footer>
+
+<script>
+  // menu
+  const overlay=document.getElementById('overlay');
+  document.getElementById('openMenu').addEventListener('click',()=>{overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'});
+  const closeM=()=>{overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=''};
+  document.getElementById('closeMenu').addEventListener('click',closeM);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+  // sound
+  const snd=document.getElementById('snd');
+  snd.addEventListener('click',()=>{const on=snd.classList.toggle('on');snd.setAttribute('aria-checked',on?'true':'false')});
+  // topbar + progress
+  const topbar=document.getElementById('topbar');
+  const progress=document.getElementById('progress');
+  window.addEventListener('scroll',()=>{
+    topbar.classList.toggle('solid',window.scrollY>80);
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    progress.style.width=(h>0?(window.scrollY/h*100):0)+'%';
+  },{passive:true});
+
+  // background stars
+  function sprinkle(el,n,opts={}){
+    for(let i=0;i<n;i++){
+      const s=document.createElement('span');
+      const sz=Math.random()*2+(opts.min||.6);
+      s.style.width=sz+'px';s.style.height=sz+'px';
+      s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+      s.style.opacity=(Math.random()*(opts.maxOp||.5)+.15).toFixed(2);
+      el.appendChild(s);
+    }
+  }
+  sprinkle(document.getElementById('skyyHero'),60);
+  sprinkle(document.getElementById('bgstars'),80,{maxOp:.6});
+
+  // ===== camada data =====
+  const PH=(tag,hint)=>({type:'ph',tag,hint});
+  const IM=(src,alt,cap)=>({type:'img',src,alt,cap});
+  const DATA={
+    '2002':{
+      name:'Los Pumas <em>de bolsillo.</em>',sub:'31 jugadores · La camada que cruzó el desierto',
+      eye:'Camada · 2002',
+      photos:[PH('[ FOTO_CAMADA_2002_GRUPAL ]','Plantel completo'),PH('[ FOTO_2002_GIRA ]','La gira a Mendoza'),PH('[ FOTO_2002_FESTEJO ]','El festejo')],
+      anec:[{q:'"Volvimos invictos de Tucumán. Lo festejamos en el quincho hasta las seis."',a:'El Coya · Capitán'},{q:'"Esa final no se ganó el sábado. Se ganó todos los martes a las siete."',a:'Pulguita · Coach'}],
+      hoy:[{n:'El Coya · Mariano F.',r:'Abogado · Salta',i:'MF'},{n:'Pelado · Tomás L.',r:'Coach M14 JCS',i:'TL'},{n:'Rambo · Lucas D.',r:'Ingeniero · Madrid',i:'LD'},{n:'Negro · Juan P.',r:'Médico · Mendoza',i:'JP'}]
+    },
+    '2005':{
+      name:'La gira <em>al sur.</em>',sub:'28 jugadores · Bariloche y la nevada del \'05',
+      eye:'Camada · 2005',
+      photos:[PH('[ FOTO_2005_BARILOCHE ]','El equipo en la nieve'),PH('[ FOTO_2005_PLANTEL ]','Plantel oficial'),PH('[ FOTO_2005_TERCER ]','Tercer tiempo')],
+      anec:[{q:'"La cancha estaba blanca. Jugamos igual. Algunos en short."',a:'El Mono · Wing'},{q:'"Volvimos sin un par de botines y con tres novias nuevas."',a:'Anónimo · Eternal'}],
+      hoy:[{n:'El Mono · Diego A.',r:'Productor agro · Tucumán',i:'DA'},{n:'Toto · Pablo R.',r:'Arquitecto · Salta',i:'PR'},{n:'Lechuza · Hernán B.',r:'Coach hockey JCS',i:'HB'},{n:'Pampa · Javier S.',r:'Comerciante · Cafayate',i:'JS'}]
+    },
+    '2008':{
+      name:'Los del <em>barro.</em>',sub:'33 jugadores · La final con lluvia que no paró nunca',
+      eye:'Camada · 2008',
+      photos:[PH('[ FOTO_2008_FINAL ]','La final bajo la tormenta'),PH('[ FOTO_2008_PLANTEL ]','Plantel + cuerpo técnico'),PH('[ FOTO_2008_VESTUARIO ]','Vestuario después del partido')],
+      anec:[{q:'"Cuando salieron los pumas del banco a felicitarnos, llovía tanto que no nos veíamos."',a:'Capitán · 2008'},{q:'"Mi vieja dejó de mirar al minuto 3. Igual la película la tengo entera en la cabeza."',a:'Apertura · 2008'}],
+      hoy:[{n:'Cabeza · Iván M.',r:'Empresario · Salta',i:'IM'},{n:'Beto · Federico C.',r:'Cirujano · BsAs',i:'FC'},{n:'Tincho · Martín G.',r:'Coach M16 JCS',i:'MG'},{n:'Pochoclo · Ramiro V.',r:'Productor TV · Córdoba',i:'RV'}]
+    },
+    '2012':{
+      name:'Los <em>hermanos chicos.</em>',sub:'29 jugadores · La camada de los hermanos Figallo',
+      eye:'Camada · 2012',
+      photos:[PH('[ FOTO_2012_FIGALLO ]','Los Figallo en infantiles'),PH('[ FOTO_2012_PLANTEL ]','Plantel campeón regional'),PH('[ FOTO_2012_CANCHA1 ]','Entrada a Cancha 1')],
+      anec:[{q:'"Tres hermanos en el mismo line. La defensa contraria no entendía qué nombre gritar."',a:'Coach · 2012'},{q:'"Mi hermano me tackleó en el entrenamiento. Mi vieja se enojó conmigo."',a:'Nacho F.'}],
+      hoy:[{n:'Nacho F. · Ignacio F.',r:'Veterinario · Salta',i:'IF'},{n:'Toto F. · Tomás F.',r:'Coach Pumas M19',i:'TF'},{n:'Chino · Alejandro L.',r:'Diseñador · Berlín',i:'AL'},{n:'Tincho · Martín O.',r:'Abogado · Salta',i:'MO'}]
+    },
+    '2015':{
+      name:'Las <em>medallas.</em>',sub:'30 jugadores · Subcampeones URBA Inferiores',
+      eye:'Camada · 2015',
+      photos:[PH('[ FOTO_2015_MEDALLAS ]','Subcampeones'),PH('[ FOTO_2015_BSAS ]','Concentración en BsAs'),PH('[ FOTO_2015_FESTEJO ]','El asado del regreso')],
+      anec:[{q:'"Perdimos por dos puntos. Lloramos. Después fuimos al asado y nos reímos toda la noche."',a:'Capitán · 2015'},{q:'"Esa medalla todavía la tengo colgada arriba de la cama."',a:'Hooker · 2015'}],
+      hoy:[{n:'Manija · Joaquín T.',r:'Médico residente · Rosario',i:'JT'},{n:'Bocha · Esteban Z.',r:'Coach M15 JCS',i:'EZ'},{n:'Cabezón · Lucas A.',r:'Estudiante MBA · Boston',i:'LA'},{n:'Tito · Francisco H.',r:'Productor · Cerrillos',i:'FH'}]
+    },
+    '2018':{
+      name:'Los del <em>baile.</em>',sub:'27 jugadores · El haka improvisado en Córdoba',
+      eye:'Camada · 2018',
+      photos:[PH('[ FOTO_2018_HAKA ]','El haka improvisado'),PH('[ FOTO_2018_PLANTEL ]','Plantel Inferiores'),PH('[ FOTO_2018_TERCER ]','Tercer tiempo en Córdoba')],
+      anec:[{q:'"Salimos a la cancha bailando. La tribuna se quedó muda 10 segundos. Después aplaudía."',a:'Wing · 2018'},{q:'"Coach nos miró y dijo: ahora que se rieron, jueguen en serio."',a:'Coach · 2018'}],
+      hoy:[{n:'Pelu · Julián M.',r:'Diseñador UX · Salta',i:'JM'},{n:'Coco · Bruno V.',r:'Coach M13 JCS',i:'BV'},{n:'Cabra · Felipe R.',r:'Periodista deportivo',i:'FR'},{n:'Tato · Agustín O.',r:'Ingeniero · Buenos Aires',i:'AO'}]
+    },
+    '2022':{
+      name:'La promo del <em>banderazo.</em>',sub:'32 jugadores · El primer banderazo grabado de la era moderna',
+      eye:'Camada · 2022',
+      photos:[IM('assets/banderazo.png','Banderazo en Cancha 1','El banderazo en Cancha 1'),PH('[ FOTO_2022_PLANTEL ]','Plantel completo'),PH('[ FOTO_2022_FIESTA ]','La fiesta de fin de año')],
+      anec:[{q:'"Pensamos que iban a venir 200. Vinieron mil. La Cancha 1 era una mancha roja."',a:'Capitán · 2022'},{q:'"Esa tarde entendí qué era ser del Jockey. No antes."',a:'Pilar · 2022'}],
+      hoy:[{n:'Chiqui · Marcos D.',r:'Estudiante Med · UNT',i:'MD'},{n:'Tincho · Joaquín L.',r:'Primera del club',i:'JL'},{n:'Pulpo · Santiago F.',r:'Estudiante UCASAL',i:'SF'},{n:'Cabezón · Bruno P.',r:'Coach M11 JCS',i:'BP'}]
+    },
+    '2026':{
+      name:'Los <em>campeones.</em>',sub:'34 jugadores · Campeón WERE M15 · 2026',
+      eye:'Camada · Hoy',
+      photos:[IM('assets/plantel-m15.png','Plantel M15 frente a la casa club','M15 campeón frente a la casa roja'),IM('assets/salida-plantel.png','La salida a la cancha','La salida entre humo'),PH('[ FOTO_M15_TROFEO ]','El plantel con el trofeo')],
+      anec:[{q:'"Veníamos perdiendo. En el entretiempo, el coach no dijo una palabra. Salimos a ganar."',a:'Capitán M15 · 2026'},{q:'"Cuando levantamos la copa, mi viejo lloraba en la tribuna. Yo también."',a:'Apertura · 2026'}],
+      hoy:[{n:'Capitán · Joaco V.',r:'Inferiores Pumas M16',i:'JV'},{n:'Apertura · Tomi G.',r:'Plantel actual · JCS',i:'TG'},{n:'8 · Lautaro R.',r:'Plantel actual · JCS',i:'LR'},{n:'Wing · Bauti S.',r:'Selección Salteña',i:'BS'}]
+    }
+  };
+
+  // ===== render ficha =====
+  const fYear=document.getElementById('fYear'), fEye=document.getElementById('fEye'), fName=document.getElementById('fName'), fSub=document.getElementById('fSub');
+  const fPhotos=document.getElementById('fPhotos'), fAnec=document.getElementById('fAnec'), fHoy=document.getElementById('fHoy');
+  function render(year){
+    const d=DATA[year];if(!d)return;
+    fYear.textContent="'"+year.slice(2);
+    fEye.textContent=d.eye;
+    fName.innerHTML=d.name;
+    fSub.textContent=d.sub;
+    fPhotos.innerHTML=d.photos.map(p=>p.type==='img'
+      ? `<div class="frame"><img src="${p.src}" alt="${p.alt}"/><div class="cap">${p.cap}</div></div>`
+      : `<div class="ph"><div class="ic">▦</div><div class="tag">${p.tag}</div><div class="hint">${p.hint}</div></div>`
+    ).join('');
+    fAnec.innerHTML=d.anec.map(a=>`<div class="anec-item"><div class="q">${a.q}</div><div class="a">— ${a.a}</div></div>`).join('');
+    fHoy.innerHTML=d.hoy.map(h=>`<div class="hoy-card"><div class="avatar">${h.i}</div><div class="ifo"><div class="nm">${h.n}</div><div class="r">${h.r}</div></div></div>`).join('');
+    // mark active node + chip + link highlights
+    document.querySelectorAll('.cnode').forEach(n=>n.classList.toggle('active',n.dataset.year===year));
+    document.querySelectorAll('.yearchip').forEach(c=>c.classList.toggle('active',c.dataset.year===year));
+    document.querySelectorAll('#links line').forEach(l=>{
+      const [a,b]=l.dataset.pair.split('-');
+      l.classList.toggle('hot',a===year||b===year);
+    });
+  }
+  document.querySelectorAll('.cnode').forEach(n=>n.addEventListener('click',()=>{render(n.dataset.year);document.getElementById('ficha').scrollIntoView({behavior:'smooth',block:'start'})}));
+  document.querySelectorAll('.yearchip').forEach(c=>c.addEventListener('click',()=>{render(c.dataset.year);document.getElementById('ficha').scrollIntoView({behavior:'smooth',block:'start'})}));
+  // random
+  document.getElementById('randomBtn').addEventListener('click',()=>{
+    const keys=Object.keys(DATA).filter(k=>k!==(document.querySelector('.cnode.active')?.dataset.year));
+    const pick=keys[Math.floor(Math.random()*keys.length)];
+    render(pick);
+  });
+  // default
+  render('2026');
+
+  // reveal
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.18,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

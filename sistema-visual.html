@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jockey Club de Salta · Sistema Visual Base</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --rojo:#B02A28;
+    --rojo-deep:#9A2220;
+    --vino:#B02A28;
+    --vino-900:#B02A28;
+    --blanco:#FFFFFF;
+    --crema:#F4EBDD;
+    --crema-2:#ECDFC9;
+    --crema-3:#E4D5BB;
+    --tinta:#2A2320;
+    --tinta-60:#6a605a;
+    --ocre:#C8862B;
+    --shadow-warm:0 24px 60px -28px rgba(176,42,40,.45);
+    --shadow-soft:0 12px 30px -16px rgba(42,35,32,.28);
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --maxw:1240px;
+    --pad:clamp(20px,5vw,80px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--crema);
+    color:var(--tinta);
+    font-family:"Archivo",system-ui,sans-serif;
+    font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--rojo);color:#fff}
+  h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;font-weight:520;line-height:1;letter-spacing:-.015em;font-optical-sizing:auto}
+  .serif{font-family:"Fraunces",Georgia,serif}
+  .mono{font-family:"JetBrains Mono",monospace}
+  .grotesk{font-family:"Archivo",sans-serif}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+
+  /* ---------- layout helpers ---------- */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+  .section{padding:clamp(72px,11vw,150px) 0;position:relative}
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--rojo);display:flex;align-items:center;gap:12px;margin-bottom:26px;font-weight:500;
+  }
+  .eyebrow::before{content:"";width:34px;height:1.5px;background:var(--rojo);display:inline-block}
+  .on-dark .eyebrow{color:#E9A24A}
+  .on-dark .eyebrow::before{background:#E9A24A}
+  .lede{font-size:clamp(19px,2vw,23px);line-height:1.5;max-width:62ch;color:var(--tinta);font-weight:380}
+  .muted{color:var(--tinta-60)}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1.15s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  /* ---------- top nav ---------- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px clamp(20px,5vw,48px);
+    transition:background .5s var(--ease),box-shadow .5s var(--ease),padding .5s var(--ease);
+    mix-blend-mode:normal;
+  }
+  .topbar.solid{background:rgba(244,235,221,.86);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(42,35,32,.08);padding-top:12px;padding-bottom:12px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{width:30px;height:30px}
+  .brand b{font-family:"Archivo";font-weight:700;font-size:14px;letter-spacing:.02em}
+  .brand .tag{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tinta-60);border-left:1px solid rgba(42,35,32,.25);padding-left:12px}
+  .topbar.on-hero .brand b,.topbar.on-hero .brand .tag{color:#fff}
+  .topbar.on-hero .brand .tag{border-color:rgba(255,255,255,.4)}
+  .topbar.on-hero .menu-btn{color:#fff;border-color:rgba(255,255,255,.5)}
+  .menu-btn{
+    font-family:"JetBrains Mono";font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    border:1px solid rgba(42,35,32,.3);border-radius:100px;padding:9px 18px;cursor:pointer;background:transparent;color:var(--tinta);
+    display:flex;align-items:center;gap:9px;transition:.3s var(--ease)
+  }
+  .menu-btn:hover{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+  .menu-btn .dots{display:flex;gap:3px}
+  .menu-btn .dots i{width:4px;height:4px;border-radius:50%;background:currentColor;display:block}
+
+  /* ---------- HERO (rojo+blanco · momento camiseta) ---------- */
+  .hero{
+    min-height:100svh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;
+    background:var(--rojo);overflow:hidden;
+  }
+  .hero-photo{position:absolute;inset:0}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05)}
+  .hero-photo::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(176,42,40,.55) 0%,rgba(176,42,40,.12) 38%,rgba(176,42,40,.66) 100%),
+    radial-gradient(120% 90% at 50% 120%,rgba(176,42,40,.7),transparent 60%)}
+  .hero-inner{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 var(--pad) clamp(48px,7vw,96px)}
+  .hero h1{
+    color:#fff;font-weight:560;
+    font-size:clamp(52px,11.5vw,168px);line-height:.92;letter-spacing:-.025em;
+    text-wrap:balance;margin-bottom:26px;
+  }
+  .hero h1 em{font-style:italic;font-weight:400}
+  .hero .kicker{
+    color:#fff;font-family:"JetBrains Mono";font-size:12.5px;letter-spacing:.28em;text-transform:uppercase;
+    margin-bottom:30px;display:flex;align-items:center;gap:14px;opacity:.95
+  }
+  .hero .kicker .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:6px 12px;border-radius:100px;backdrop-filter:blur(4px)}
+  .hero .sub{color:rgba(255,255,255,.92);max-width:54ch;font-size:clamp(16px,1.7vw,20px);font-weight:380}
+  .hero .crest{position:absolute;top:clamp(90px,14vw,140px);right:var(--pad);width:clamp(76px,9vw,128px);filter:drop-shadow(0 12px 30px rgba(0,0,0,.35));z-index:2}
+  .scrollcue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;color:#fff;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;opacity:.85}
+  .scrollcue .line{width:1px;height:42px;background:linear-gradient(#fff,transparent);animation:cue 2.2s var(--ease) infinite}
+  @keyframes cue{0%{transform:scaleY(.2);transform-origin:top;opacity:0}40%{opacity:1}100%{transform:scaleY(1);transform-origin:top;opacity:0}}
+
+  /* ---------- intro framing ---------- */
+  .frame-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,90px);align-items:end}
+  @media (max-width:860px){.frame-grid{grid-template-columns:1fr;gap:34px}}
+  .bignum{font-family:"Fraunces";font-weight:300;font-size:clamp(15px,1.1vw,16px);color:var(--rojo)}
+  .frame-grid h2{font-size:clamp(34px,5.4vw,72px);font-weight:480;letter-spacing:-.02em;line-height:.98}
+  .frame-grid h2 em{font-style:italic;color:var(--rojo)}
+  .principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:rgba(42,35,32,.13);border:1px solid rgba(42,35,32,.13);margin-top:clamp(48px,7vw,90px);border-radius:14px;overflow:hidden}
+  .principles .p{background:var(--crema);padding:28px 26px;transition:background .4s var(--ease)}
+  .principles .p:hover{background:var(--crema-2)}
+  .principles .p .n{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.2em;color:var(--rojo);margin-bottom:14px}
+  .principles .p h4{font-size:21px;font-weight:520;margin-bottom:8px;letter-spacing:-.01em}
+  .principles .p p{font-size:14.5px;color:var(--tinta-60);line-height:1.5}
+
+  /* ---------- palette ---------- */
+  .pal-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:8px}
+  .sw{border-radius:14px;overflow:hidden;border:1px solid rgba(42,35,32,.1);background:var(--crema);box-shadow:var(--shadow-soft);display:flex;flex-direction:column;min-height:230px}
+  .sw .chip{flex:1;position:relative}
+  .sw .meta{padding:16px 18px 18px;background:#fff}
+  .sw .meta .nm{font-weight:700;font-size:15px;letter-spacing:-.01em}
+  .sw .meta .hx{font-family:"JetBrains Mono";font-size:12px;color:var(--tinta-60);margin-top:3px}
+  .sw .meta .role{font-size:12.5px;color:var(--tinta-60);margin-top:10px;line-height:1.45}
+  .sw.span6{grid-column:span 6}.sw.span4{grid-column:span 4}.sw.span3{grid-column:span 3}.sw.span2{grid-column:span 2}
+  @media (max-width:980px){.sw.span6{grid-column:span 6}.sw.span4{grid-column:span 6}.sw.span3{grid-column:span 6}.sw.span2{grid-column:span 6}}
+  @media (max-width:620px){.pal-grid{grid-template-columns:1fr}.sw{grid-column:1/-1 !important}}
+  .a11y{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap}
+  .a11y .pill{font-family:"JetBrains Mono";font-size:12px;letter-spacing:.04em;border:1px solid rgba(42,35,32,.2);border-radius:100px;padding:9px 15px;display:flex;align-items:center;gap:9px}
+  .a11y .pill .ok{color:#1d7a4d;font-weight:600}
+  .a11y .pill .no{color:var(--rojo);font-weight:600}
+
+  /* ---------- chromatic journey ---------- */
+  .journey{background:var(--tinta);color:#fff}
+  .journey .eyebrow{color:#E9A24A}.journey .eyebrow::before{background:#E9A24A}
+  .journey h2{color:#fff;font-size:clamp(30px,4.4vw,56px);font-weight:460;letter-spacing:-.02em;max-width:18ch}
+  .ribbon{display:flex;margin-top:48px;border-radius:16px;overflow:hidden;box-shadow:0 30px 70px -30px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08)}
+  .ribbon .seg{flex:1;min-height:300px;padding:22px 18px;display:flex;flex-direction:column;justify-content:space-between;position:relative;transition:flex .55s var(--ease);min-width:0}
+  .ribbon .seg:hover{flex:1.7}
+  .ribbon .seg .top{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.16em;opacity:.8}
+  .ribbon .seg .nm{font-family:"Fraunces";font-size:clamp(15px,1.5vw,21px);font-weight:520;line-height:1.05;letter-spacing:-.01em}
+  .ribbon .seg .bg{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.05em;opacity:.7}
+  .ribbon .seg.r{background:var(--rojo);color:#fff}
+  .ribbon .seg.rb{background:linear-gradient(135deg,var(--rojo) 0 50%,#fff 50% 100%);color:#fff}
+  .ribbon .seg.rb .nm,.ribbon .seg.rb .bg{mix-blend-mode:normal;text-shadow:0 1px 8px rgba(0,0,0,.25)}
+  .ribbon .seg.cream{background:var(--crema);color:var(--tinta)}
+  .ribbon .seg.cream .top,.ribbon .seg.cream .bg{color:var(--tinta-60)}
+  .ribbon .seg.vino{background:var(--vino);color:#fff}
+  .ribbon .seg.ocre{background:var(--crema);color:var(--tinta);box-shadow:inset 0 -6px 0 var(--ocre)}
+  .ribbon .seg.ocre .top{color:var(--ocre)}
+  .journey .note{margin-top:24px;font-size:14.5px;color:rgba(255,255,255,.7);max-width:70ch}
+  @media (max-width:760px){.ribbon{flex-direction:column}.ribbon .seg{min-height:120px;flex-direction:row;align-items:center;gap:16px}.ribbon .seg:hover{flex:1}.ribbon .seg>*{flex:1}}
+
+  /* ---------- typography ---------- */
+  .type-row{display:grid;grid-template-columns:200px 1fr;gap:clamp(24px,4vw,60px);align-items:start;padding:clamp(34px,5vw,56px) 0;border-top:1px solid rgba(42,35,32,.14)}
+  @media (max-width:760px){.type-row{grid-template-columns:1fr;gap:18px}}
+  .type-row .label .role{font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--rojo);margin-bottom:10px}
+  .type-row .label h3{font-size:30px;font-weight:500}
+  .type-row .label p{font-size:13.5px;color:var(--tinta-60);margin-top:10px;line-height:1.5}
+  .specimen .big{font-family:"Fraunces";font-size:clamp(46px,8vw,108px);line-height:.92;font-weight:480;letter-spacing:-.025em}
+  .specimen .big em{font-style:italic;font-weight:380}
+  .specimen .gbig{font-family:"Archivo";font-size:clamp(40px,7vw,92px);line-height:.95;font-weight:760;letter-spacing:-.03em}
+  .specimen .glyphs{font-family:"Fraunces";font-size:clamp(20px,2.6vw,34px);color:var(--tinta-60);margin-top:14px;letter-spacing:.01em}
+  .wstrip{display:flex;flex-wrap:wrap;gap:22px;margin-top:18px;align-items:baseline}
+  .wstrip span{font-family:"Fraunces";font-size:26px}
+  .wstrip.g span{font-family:"Archivo"}
+  .wstrip span small{display:block;font-family:"JetBrains Mono";font-size:10px;letter-spacing:.1em;color:var(--tinta-60);margin-top:4px;font-weight:400}
+  .scale-list{margin-top:10px}
+  .scale-list .ln{display:flex;align-items:baseline;gap:18px;padding:11px 0;border-bottom:1px dashed rgba(42,35,32,.16)}
+  .scale-list .ln .tk{font-family:"JetBrains Mono";font-size:11px;color:var(--tinta-60);width:118px;flex-shrink:0;letter-spacing:.03em}
+  .scale-list .ln .sp{font-family:"Fraunces";white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* in-use pairing card */
+  .pairing{margin-top:56px;background:#fff;border-radius:18px;border:1px solid rgba(42,35,32,.1);box-shadow:var(--shadow-soft);overflow:hidden;display:grid;grid-template-columns:1.15fr 1fr}
+  @media (max-width:820px){.pairing{grid-template-columns:1fr}}
+  .pairing .copy{padding:clamp(30px,4vw,52px)}
+  .pairing .copy .k{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--rojo);margin-bottom:18px}
+  .pairing .copy h3{font-family:"Fraunces";font-size:clamp(30px,3.6vw,46px);font-weight:480;letter-spacing:-.02em;line-height:1.02}
+  .pairing .copy h3 em{font-style:italic;color:var(--rojo)}
+  .pairing .copy p{margin-top:18px;color:var(--tinta-60);max-width:42ch}
+  .pairing .copy .meta{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;font-family:"JetBrains Mono";font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--tinta-60)}
+  .pairing .copy .meta span{border:1px solid rgba(42,35,32,.18);border-radius:100px;padding:6px 11px}
+  .pairing .ph{position:relative;min-height:280px;background:#222}
+  .pairing .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+  /* ---------- components ---------- */
+  .comp-band{background:var(--crema-2)}
+  .comp-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(18px,2.2vw,28px);margin-top:8px}
+  .card-demo{grid-column:span 4;background:#fff;border-radius:16px;border:1px solid rgba(42,35,32,.1);box-shadow:var(--shadow-soft);padding:26px 24px;display:flex;flex-direction:column}
+  .card-demo.span6{grid-column:span 6}.card-demo.span8{grid-column:span 8}.card-demo.span12{grid-column:span 12}
+  @media (max-width:980px){.card-demo,.card-demo.span6,.card-demo.span8{grid-column:span 12}}
+  .card-demo > .ttl{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tinta-60);margin-bottom:22px;display:flex;justify-content:space-between;align-items:center}
+  .card-demo > .ttl .tagn{color:var(--rojo)}
+
+  /* buttons */
+  .btn{font-family:"Archivo";font-weight:600;font-size:15px;letter-spacing:.01em;border-radius:100px;padding:14px 26px;border:1.5px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:.35s var(--ease);position:relative}
+  .btn .arr{transition:transform .35s var(--ease)}
+  .btn:hover .arr{transform:translateX(4px)}
+  .btn-primary{background:var(--rojo);color:#fff}
+  .btn-primary:hover{background:var(--rojo-deep);box-shadow:0 14px 28px -12px rgba(176,42,40,.7)}
+  .btn-primary:active{transform:translateY(1px)}
+  .btn-outline{background:transparent;color:var(--tinta);border-color:rgba(42,35,32,.32)}
+  .btn-outline:hover{border-color:var(--ocre);color:var(--ocre);box-shadow:inset 0 0 0 1px var(--ocre)}
+  .btn-ghost{background:transparent;color:var(--rojo);padding-left:8px;padding-right:8px}
+  .btn-ghost::after{content:"";position:absolute;left:8px;right:8px;bottom:8px;height:1.5px;background:var(--rojo);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+  .btn-ghost:hover::after{transform:scaleX(1)}
+  .btnrow{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .states{display:flex;gap:9px;margin-top:22px;flex-wrap:wrap}
+  .states .st{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.06em;color:var(--tinta-60);border:1px dashed rgba(42,35,32,.25);border-radius:7px;padding:7px 10px}
+  .states .st b{color:var(--tinta);font-weight:600}
+
+  /* nav items / overlay menu */
+  .navmenu{display:flex;flex-direction:column;gap:2px}
+  .navmenu .item{display:flex;align-items:center;gap:18px;padding:14px 14px;border-radius:12px;transition:.35s var(--ease);cursor:pointer;position:relative;overflow:hidden}
+  .navmenu .item .thumb{width:62px;height:46px;border-radius:8px;flex-shrink:0;object-fit:cover;filter:grayscale(.25) saturate(1.05);transition:.4s var(--ease)}
+  .navmenu .item .swatchthumb{width:62px;height:46px;border-radius:8px;flex-shrink:0}
+  .navmenu .item .lab{font-family:"Fraunces";font-size:clamp(22px,2.4vw,30px);font-weight:500;letter-spacing:-.01em;transition:.35s var(--ease)}
+  .navmenu .item .idx{margin-left:auto;font-family:"JetBrains Mono";font-size:11px;color:var(--tinta-60);letter-spacing:.1em}
+  .navmenu .item:hover{background:var(--crema)}
+  .navmenu .item:hover .lab{color:var(--rojo);transform:translateX(6px)}
+  .navmenu .item:hover .thumb{transform:scale(1.06);filter:none}
+
+  /* photo card */
+  .pcard{border-radius:16px;overflow:hidden;background:#000;position:relative;box-shadow:var(--shadow-warm);aspect-ratio:4/5}
+  .pcard img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+  .pcard:hover img{transform:scale(1.05)}
+  .pcard .grad{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(176,42,40,.86) 100%)}
+  .pcard .body{position:absolute;left:0;right:0;bottom:0;padding:24px;color:#fff}
+  .pcard .body .k{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.85;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .pcard .body .k::before{content:"";width:6px;height:6px;background:var(--ocre);border-radius:50%}
+  .pcard .body h4{font-family:"Fraunces";font-size:26px;font-weight:520;line-height:1.02}
+  .pcard .body p{font-size:13.5px;opacity:.85;margin-top:8px;max-height:0;overflow:hidden;opacity:0;transition:.5s var(--ease)}
+  .pcard:hover .body p{max-height:80px;opacity:.9}
+
+  /* sound toggle */
+  .soundtoggle{display:inline-flex;align-items:center;gap:14px;background:var(--vino);color:#fff;border-radius:100px;padding:10px 12px 10px 22px;cursor:pointer;user-select:none;box-shadow:var(--shadow-warm)}
+  .soundtoggle .txt{font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.16em;text-transform:uppercase}
+  .soundtoggle .knob{width:54px;height:30px;border-radius:100px;background:rgba(255,255,255,.18);position:relative;transition:.4s var(--ease)}
+  .soundtoggle .knob::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.4s var(--ease)}
+  .soundtoggle.on .knob{background:var(--ocre)}
+  .soundtoggle.on .knob::after{left:27px}
+  .eqbars{display:flex;align-items:flex-end;gap:3px;height:18px}
+  .eqbars i{width:3px;background:#fff;height:30%;border-radius:2px}
+  .soundtoggle.on .eqbars i{animation:eq .9s ease-in-out infinite}
+  .soundtoggle.on .eqbars i:nth-child(2){animation-delay:.15s}.soundtoggle.on .eqbars i:nth-child(3){animation-delay:.3s}.soundtoggle.on .eqbars i:nth-child(4){animation-delay:.45s}
+  @keyframes eq{0%,100%{height:30%}50%{height:100%}}
+
+  /* constellation node */
+  .constella{background:radial-gradient(120% 120% at 70% 20%,#B02A28,var(--vino-900));border-radius:14px;position:relative;min-height:240px;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+  .constella .star{position:absolute;border-radius:50%;background:#fff;opacity:.5}
+  .node{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);text-align:center;cursor:pointer}
+  .node .dot{width:16px;height:16px;border-radius:50%;background:var(--ocre);margin:0 auto;box-shadow:0 0 0 0 rgba(200,134,43,.6);transition:.4s var(--ease);position:relative}
+  .node .dot::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:1px solid rgba(200,134,43,.5);opacity:0;transition:.4s var(--ease)}
+  .node:hover .dot{transform:scale(1.25);box-shadow:0 0 26px 6px rgba(200,134,43,.55)}
+  .node:hover .dot::after{opacity:1;inset:-13px}
+  .node .yr{font-family:"Fraunces";color:#fff;font-size:24px;margin-top:14px;font-weight:520;letter-spacing:.01em;transition:.4s var(--ease)}
+  .node .meta{font-family:"JetBrains Mono";font-size:10.5px;color:rgba(255,255,255,.6);letter-spacing:.12em;margin-top:4px;opacity:0;transform:translateY(6px);transition:.4s var(--ease)}
+  .node:hover .meta{opacity:1;transform:none}
+  .node:hover .yr{color:var(--ocre)}
+  .constella .hint{position:absolute;left:18px;bottom:16px;font-family:"JetBrains Mono";font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.45);text-transform:uppercase}
+
+  /* timeline item */
+  .tl{position:relative;padding-left:38px}
+  .tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--rojo),rgba(176,42,40,.15))}
+  .tl .ev{position:relative;padding:8px 0 26px}
+  .tl .ev::before{content:"";position:absolute;left:-38px;top:9px;width:16px;height:16px;border-radius:50%;background:var(--crema);border:3px solid var(--rojo);transition:.4s var(--ease)}
+  .tl .ev:hover::before{background:var(--rojo);box-shadow:0 0 0 5px rgba(176,42,40,.16)}
+  .tl .ev .yr{font-family:"JetBrains Mono";font-size:12px;letter-spacing:.1em;color:var(--rojo);font-weight:500}
+  .tl .ev h4{font-family:"Fraunces";font-size:22px;font-weight:520;margin-top:5px;letter-spacing:-.01em}
+  .tl .ev p{font-size:14px;color:var(--tinta-60);margin-top:4px;max-width:40ch}
+
+  /* tokens for radius/shadow/space */
+  .tokens{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-top:6px}
+  .tok{background:#fff;border:1px solid rgba(42,35,32,.1);border-radius:12px;padding:18px}
+  .tok .vis{height:54px;border-radius:10px;margin-bottom:14px;background:var(--crema-3)}
+  .tok .vis.sh{background:#fff;box-shadow:var(--shadow-warm)}
+  .tok .vis.sh2{background:#fff;box-shadow:var(--shadow-soft)}
+  .tok .vis.r0{border-radius:0}.tok .vis.r1{border-radius:8px}.tok .vis.r2{border-radius:16px}.tok .vis.r3{border-radius:100px}
+  .tok .nm{font-family:"JetBrains Mono";font-size:11px;color:var(--tinta);font-weight:500}
+  .tok .vl{font-family:"JetBrains Mono";font-size:10.5px;color:var(--tinta-60);margin-top:3px}
+
+  /* ---------- motion ---------- */
+  .motion{background:var(--vino);color:#fff;overflow:hidden}
+  .motion .eyebrow{color:#E9A24A}.motion .eyebrow::before{background:#E9A24A}
+  .motion h2{color:#fff;font-size:clamp(30px,4.6vw,60px);font-weight:460;letter-spacing:-.02em;max-width:16ch}
+  .motion .mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;margin-top:48px}
+  .motion .mcard{border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:26px 24px;background:rgba(255,255,255,.04)}
+  .motion .mcard .ic{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.16em;color:#E9A24A;margin-bottom:16px}
+  .motion .mcard h4{color:#fff;font-size:22px;font-weight:520;margin-bottom:8px}
+  .motion .mcard p{font-size:14px;color:rgba(255,255,255,.78);line-height:1.5}
+  .motion .mcard code{font-family:"JetBrains Mono";font-size:12px;background:rgba(0,0,0,.28);padding:3px 7px;border-radius:6px;color:#F4C988;display:inline-block;margin-top:10px}
+  .demo-reveal{margin-top:54px;border-top:1px solid rgba(255,255,255,.14);padding-top:40px}
+  .demo-reveal .stage{display:flex;flex-wrap:wrap;gap:14px;margin-top:22px}
+  .demo-reveal .stage .w{flex:1;min-width:120px;height:86px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono";font-size:11px;color:rgba(255,255,255,.55);opacity:0;transform:translateY(26px) scale(.96)}
+  .demo-reveal .stage .w.in{opacity:1;transform:none;transition:opacity .8s var(--ease),transform .9s var(--ease)}
+  .replay{margin-top:22px;font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.4);border-radius:100px;padding:9px 18px;cursor:pointer;transition:.3s var(--ease)}
+  .replay:hover{background:var(--ocre);border-color:var(--ocre);color:var(--vino-900)}
+
+  /* ---------- footer / closing ---------- */
+  .closing{background:var(--rojo);color:#fff;position:relative;overflow:hidden}
+  .closing .hero-photo{opacity:.22}
+  .closing .inner{position:relative;z-index:2}
+  .closing h2{color:#fff;font-size:clamp(38px,6.6vw,92px);font-weight:520;letter-spacing:-.025em;line-height:.96;max-width:16ch}
+  .closing h2 em{font-style:italic;font-weight:380}
+  .closing .sub{color:rgba(255,255,255,.9);max-width:52ch;margin-top:24px;font-size:18px}
+  .closing .acts{margin-top:40px;display:flex;gap:16px;flex-wrap:wrap}
+  .closing .btn-primary{background:#fff;color:var(--rojo)}
+  .closing .btn-primary:hover{background:var(--crema);box-shadow:0 16px 34px -14px rgba(0,0,0,.5)}
+  .closing .btn-outline{color:#fff;border-color:rgba(255,255,255,.5)}
+  .closing .btn-outline:hover{border-color:#fff;color:#fff;box-shadow:inset 0 0 0 1px #fff}
+
+  footer.foot{background:var(--vino-900);color:rgba(255,255,255,.86);padding:60px 0 40px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+  @media (max-width:860px){.foot-grid{grid-template-columns:1fr 1fr;gap:32px}}
+  @media (max-width:520px){.foot-grid{grid-template-columns:1fr}}
+  .foot .lg{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .foot .lg img{width:40px;height:40px;background:#fff;border-radius:8px;padding:5px}
+  .foot .lg b{font-family:"Fraunces";font-size:19px;font-weight:520}
+  .foot p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.7)}
+  .foot h5{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#E9A24A;margin-bottom:16px}
+  .foot ul{list-style:none}
+  .foot ul li{padding:5px 0;font-size:14px;color:rgba(255,255,255,.78)}
+  .foot ul li a:hover{color:#fff;text-decoration:underline}
+  .foot .copy{border-top:1px solid rgba(255,255,255,.12);margin-top:44px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:"JetBrains Mono";font-size:11px;letter-spacing:.06em;color:rgba(255,255,255,.5)}
+
+  /* section heading shared */
+  .sec-head{max-width:64ch}
+  .sec-head h2{font-size:clamp(32px,5vw,64px);font-weight:470;letter-spacing:-.022em;line-height:1}
+  .sec-head h2 em{font-style:italic;color:var(--rojo)}
+  .sec-head p{margin-top:20px;color:var(--tinta-60);font-size:17px;max-width:60ch}
+</style>
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<header class="topbar on-hero" id="topbar">
+  <div class="brand">
+    <img src="assets/logo-jcs.png" alt="Escudo Jockey Club de Salta" />
+    <b>JOCKEY CLUB DE SALTA</b>
+    <span class="tag">Sistema Visual · v1</span>
+  </div>
+  <button class="menu-btn">Menú <span class="dots"><i></i><i></i><i></i></span></button>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" data-screen-label="Cover">
+  <div class="hero-photo"><img src="assets/banderazo.png" alt="Banderazo en la Cancha 1" /></div>
+  <img class="crest" src="assets/logo-jcs.png" alt="Escudo JCS" />
+  <div class="hero-inner">
+    <div class="kicker reveal in"><span class="chip">El Rojo y Blanco · 1965</span><span>Más que un club, una familia</span></div>
+    <h1 class="reveal in">Sistema visual<br /><em>base</em></h1>
+    <p class="sub reveal in d1">La gramática con la que el club se vuelve sentido: paleta aplicada, las dos voces tipográficas y los componentes núcleo. El punto de partida defendible, antes de las pantallas.</p>
+  </div>
+  <div class="scrollcue"><span>Scroll</span><span class="line"></span></div>
+</section>
+
+<!-- ===== FRAMING ===== -->
+<section class="section" id="concepto">
+  <div class="wrap">
+    <div class="frame-grid">
+      <div>
+        <div class="eyebrow reveal">El concepto rector</div>
+        <h2 class="reveal d1">No <em>informar.</em><br />Hacer sentir<br />parte.</h2>
+      </div>
+      <div>
+        <p class="lede reveal d2">La web traduce el <em>adentro</em> del club —las camadas, los apodos, el tercer tiempo, el rugido de la Cancha 1— y lo lleva al centro. El diseño opera como <strong>traductor</strong>: no reproduce la cultura, genera sentido nuevo. La información deportiva es una capa, nunca el núcleo.</p>
+      </div>
+    </div>
+    <div class="principles reveal d1">
+      <div class="p"><div class="n">01</div><h4>De informar a significar</h4><p>La data deportiva acompaña; la emoción manda.</p></div>
+      <div class="p"><div class="n">02</div><h4>El adentro al núcleo</h4><p>Lo íntimo y periférico se vuelve protagonista.</p></div>
+      <div class="p"><div class="n">03</div><h4>Poliglosia</h4><p>Texto, imagen, sonido y movimiento conviven.</p></div>
+      <div class="p"><div class="n">04</div><h4>Frontera hospitalaria</h4><p>Deja entrar al de afuera sin perder identidad.</p></div>
+      <div class="p"><div class="n">05</div><h4>Dinamismo con sentido</h4><p>La animación sirve a la emoción, nunca adorna.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PALETTE ===== -->
+<section class="section" id="paleta" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow reveal">01 · Paleta aplicada</div>
+      <h2 class="reveal d1">Seis colores con <em>oficio.</em></h2>
+      <p class="reveal d2">Un rojo ladrillo cálido —el de la casa-club y la camiseta— no un bermellón de alarma. El <strong>rojo</strong> manda en las secciones inmersivas; el crema deja respirar; el ocre entra con cuentagotas.</p>
+    </div>
+
+    <div class="pal-grid reveal d1" style="margin-top:48px">
+      <div class="sw span6"><div class="chip" style="background:var(--rojo)"></div><div class="meta"><div class="nm">Rojo Jockey</div><div class="hx">#B02A28</div><div class="role">Primario. Identidad, CTA, energía. El “momento camiseta”. Abre y cierra el recorrido.</div></div></div>
+      <div class="sw span3"><div class="chip" style="background:#9A2220"></div><div class="meta"><div class="nm">Rojo-deep</div><div class="hx">#9A2220</div><div class="role">Estado hover/active del botón primario y de los acentos rojos.</div></div></div>
+      <div class="sw span3"><div class="chip" style="background:#fff;box-shadow:inset 0 0 0 1px rgba(42,35,32,.12)"></div><div class="meta"><div class="nm">Blanco camiseta</div><div class="hx">#FFFFFF</div><div class="role">Contraste y momentos de pureza.</div></div></div>
+      <div class="sw span4"><div class="chip" style="background:var(--crema)"></div><div class="meta"><div class="nm">Crema cálido</div><div class="hx">#F4EBDD</div><div class="role">Fondo base. Secciones que respiran, calidez salteña.</div></div></div>
+      <div class="sw span4"><div class="chip" style="background:var(--tinta)"></div><div class="meta"><div class="nm">Tinta</div><div class="hx">#2A2320</div><div class="role">Texto. Negro cálido — nunca #000 puro.</div></div></div>
+      <div class="sw span4"><div class="chip" style="background:var(--ocre)"></div><div class="meta"><div class="nm">Ocre Salta</div><div class="hx">#C8862B</div><div class="role">Acento puntual: hovers, líneas, detalles. Con cuentagotas.</div></div></div>
+    </div>
+
+    <div class="a11y reveal d2">
+      <div class="pill"><span class="ok">AA ✓</span> Tinta sobre Crema · 11.4:1</div>
+      <div class="pill"><span class="ok">AA ✓</span> Blanco sobre Rojo · 5.1:1</div>
+      <div class="pill"><span class="ok">AA ✓</span> Blanco sobre Rojo-deep · 6.2:1</div>
+      <div class="pill"><span class="no">⚠ cuidado</span> Tinta sobre Rojo — no usar (bajo contraste)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CHROMATIC JOURNEY ===== -->
+<section class="section journey on-dark" id="recorrido">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow reveal">02 · Recorrido cromático</div>
+      <h2 class="reveal d1">Abre y cierra en rojo. Viaja por crema y rojo en el medio.</h2>
+    </div>
+    <div class="ribbon reveal d1">
+      <div class="seg rb"><div class="top">Home</div><div><div class="nm">Manifiesto</div></div><div class="bg">ROJO + BLANCO</div></div>
+      <div class="seg cream"><div class="top">01</div><div><div class="nm">Historia viva</div></div><div class="bg">CREMA → ROJO</div></div>
+      <div class="seg vino"><div class="top">02</div><div><div class="nm">Las camadas</div></div><div class="bg">ROJO + ESTRELLAS</div></div>
+      <div class="seg cream"><div class="top">03</div><div><div class="nm">Los espacios</div></div><div class="bg">CREMA</div></div>
+      <div class="seg ocre"><div class="top">04</div><div><div class="nm">Vida social</div></div><div class="bg">CREMA + OCRE</div></div>
+      <div class="seg cream"><div class="top">05</div><div><div class="nm">Disciplinas</div></div><div class="bg">CREMA + ACENTO</div></div>
+      <div class="seg rb"><div class="top">06</div><div><div class="nm">Sentir el Rojo</div></div><div class="bg">ROJO + BLANCO</div></div>
+    </div>
+    <p class="note reveal d2">Pasá el cursor por cada tramo. Los dos extremos rojos son los “momentos camiseta”: la web se pone la casaca para entrar y para despedirse. Entre ambos, el color narra el viaje emocional.</p>
+  </div>
+</section>
+
+<!-- ===== TYPOGRAPHY ===== -->
+<section class="section" id="tipografia">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow reveal">03 · Tipografía · dos voces</div>
+      <h2 class="reveal d1">La voz del <em>sentido</em> y la voz de la <em>información.</em></h2>
+      <p class="reveal d2">Espejo de las dos rutas de comunicación: una serif con carácter para lo emocional y un grotesque limpio para la UI y los datos.</p>
+    </div>
+
+    <div class="type-row reveal">
+      <div class="label">
+        <div class="role">Display · Sentido</div>
+        <h3>Fraunces</h3>
+        <p>Serif variable, óptica alta. Titulares, manifiesto, lo memorable. Itálica para los acentos emotivos.</p>
+      </div>
+      <div class="specimen">
+        <div class="big">Una <em>familia</em><br />de rayas y cuadros.</div>
+        <div class="glyphs">AaBbCcDd · 1965 · “el Rojo y Blanco”</div>
+        <div class="wstrip">
+          <span style="font-weight:300">Aa<small>Light 300</small></span>
+          <span style="font-weight:400">Aa<small>Regular 400</small></span>
+          <span style="font-weight:500">Aa<small>Medium 500</small></span>
+          <span style="font-weight:600">Aa<small>Semibold 600</small></span>
+          <span style="font-weight:400;font-style:italic">Aa<small>Italic</small></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="type-row reveal">
+      <div class="label">
+        <div class="role">Texto / Datos · Información</div>
+        <h3>Archivo</h3>
+        <p>Grotesque de caja alta y legible. Cuerpo, navegación, fixtures, posiciones, microcopys.</p>
+      </div>
+      <div class="specimen">
+        <div class="gbig">M15 CAMPEÓN 2026</div>
+        <div class="wstrip g">
+          <span style="font-weight:300">Aa<small>Light 300</small></span>
+          <span style="font-weight:400">Aa<small>Regular 400</small></span>
+          <span style="font-weight:500">Aa<small>Medium 500</small></span>
+          <span style="font-weight:600">Aa<small>Semibold 600</small></span>
+          <span style="font-weight:800">Aa<small>Black 800</small></span>
+        </div>
+        <p class="muted" style="margin-top:18px;max-width:52ch">El cuerpo de texto vive en Archivo a 17px, interlineado 1.6. Cómodo para leer una crónica de tercer tiempo o una tabla de posiciones sin fatiga.</p>
+      </div>
+    </div>
+
+    <div class="type-row reveal" style="border-bottom:1px solid rgba(42,35,32,.14)">
+      <div class="label">
+        <div class="role">Escala modular · ~1.25</div>
+        <h3>Ritmo</h3>
+        <p>Displays fluidos con <span class="mono" style="font-size:12px">clamp()</span>. Base 8px de espaciado.</p>
+      </div>
+      <div class="specimen">
+        <div class="scale-list">
+          <div class="ln"><span class="tk">display / hero</span><span class="sp" style="font-size:46px;font-weight:480">Sentir el Rojo</span></div>
+          <div class="ln"><span class="tk">h2 / sección</span><span class="sp" style="font-size:34px;font-weight:500">Las camadas</span></div>
+          <div class="ln"><span class="tk">h3 / bloque</span><span class="sp" style="font-size:25px;font-weight:520">Tribuna Fonzo</span></div>
+          <div class="ln"><span class="tk">lede</span><span class="sp grotesk" style="font-size:20px;font-weight:380">Una bajada que respira</span></div>
+          <div class="ln"><span class="tk">body</span><span class="sp grotesk" style="font-size:17px">Texto base de lectura cómoda</span></div>
+          <div class="ln"><span class="tk">caption / mono</span><span class="sp mono" style="font-size:12px;letter-spacing:.1em">DATA · FIXTURE · 12.5PX</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- pairing in use -->
+    <div class="pairing reveal d1">
+      <div class="copy">
+        <div class="k">Las dos voces juntas</div>
+        <h3>El redoblante, la bengala, <em>la familia.</em></h3>
+        <p>Así suena el sistema en uso: titular en Fraunces que emociona, bajada en Archivo que ordena, y una etiqueta mono que ancla el dato.</p>
+        <div class="meta"><span>Fraunces 480</span><span>Archivo 400</span><span>JetBrains Mono</span></div>
+      </div>
+      <div class="ph"><img src="assets/salida-plantel.png" alt="El plantel sale a la cancha entre humo rojo" /></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPONENTS ===== -->
+<section class="section comp-band" id="componentes">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow reveal">04 · Componentes núcleo</div>
+      <h2 class="reveal d1">El kit con el que se arman las <em>siete pantallas.</em></h2>
+      <p class="reveal d2">Mismos botones, tarjetas, navegación y controles en todo el sitio. Coherencia de sistema con estados claros: reposo, hover, activo y revelación por scroll.</p>
+    </div>
+
+    <div class="comp-grid" style="margin-top:48px">
+
+      <!-- buttons -->
+      <div class="card-demo span6 reveal">
+        <div class="ttl">Botones <span class="tagn">/ acción</span></div>
+        <div class="btnrow">
+          <button class="btn btn-primary">Hacete socio <span class="arr">→</span></button>
+          <button class="btn btn-outline">Conocer el club</button>
+          <button class="btn btn-ghost">Ver más</button>
+        </div>
+        <div class="states">
+          <span class="st"><b>reposo</b></span>
+          <span class="st"><b>hover</b> · oscurece + sombra cálida, flecha avanza</span>
+          <span class="st"><b>activo</b> · 1px abajo</span>
+          <span class="st"><b>outline</b> vira a ocre</span>
+        </div>
+      </div>
+
+      <!-- sound toggle + tokens -->
+      <div class="card-demo span6 reveal d1">
+        <div class="ttl">Toggle de sonido global <span class="tagn">/ off por defecto</span></div>
+        <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+          <div class="soundtoggle" id="sndToggle" role="switch" aria-checked="false" tabindex="0">
+            <div class="eqbars"><i></i><i></i><i></i><i></i></div>
+            <span class="txt">Sonido</span>
+            <div class="knob"></div>
+          </div>
+          <p class="muted" style="font-size:13.5px;max-width:24ch">Un único maestro. Arranca silenciado; el usuario decide entrar al paisaje sonoro.</p>
+        </div>
+        <div class="tokens" style="margin-top:26px">
+          <div class="tok"><div class="vis r2"></div><div class="nm">radius / card</div><div class="vl">16px</div></div>
+          <div class="tok"><div class="vis r3"></div><div class="nm">radius / pill</div><div class="vl">100px</div></div>
+          <div class="tok"><div class="vis sh"></div><div class="nm">shadow / warm</div><div class="vl">rojo translúcido</div></div>
+        </div>
+      </div>
+
+      <!-- overlay nav -->
+      <div class="card-demo span6 reveal">
+        <div class="ttl">Navegación · menú overlay <span class="tagn">/ cada ítem insinúa su sección</span></div>
+        <div class="navmenu">
+          <div class="item"><img class="thumb" src="assets/plantel-m15.png" alt="" /><span class="lab">Historia viva</span><span class="idx">01</span></div>
+          <div class="item"><span class="swatchthumb" style="background:radial-gradient(circle at 60% 30%,#B02A28,var(--vino-900))"></span><span class="lab">Las camadas</span><span class="idx">02</span></div>
+          <div class="item"><img class="thumb" src="assets/casa-club.png" alt="" /><span class="lab">Los espacios</span><span class="idx">03</span></div>
+          <div class="item"><img class="thumb" src="assets/tercer-tiempo.png" alt="" /><span class="lab">Vida social</span><span class="idx">04</span></div>
+          <div class="item"><img class="thumb" src="assets/golf.png" alt="" /><span class="lab">Disciplinas</span><span class="idx">05</span></div>
+          <div class="item"><img class="thumb" src="assets/banderazo.png" alt="" /><span class="lab">Sentir el Rojo</span><span class="idx">06</span></div>
+        </div>
+      </div>
+
+      <!-- photo card -->
+      <div class="card-demo span6 reveal d1">
+        <div class="ttl">Tarjeta fotográfica <span class="tagn">/ la foto manda</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div class="pcard">
+            <img src="assets/tribuna.png" alt="Tribuna y Cancha 1" />
+            <div class="grad"></div>
+            <div class="body"><div class="k">Los espacios</div><h4>Cancha 1</h4><p>El núcleo del deseo. Donde todo pasa.</p></div>
+          </div>
+          <div class="pcard">
+            <img src="assets/casa-club.png" alt="Casa club" />
+            <div class="grad"></div>
+            <div class="body"><div class="k">Sede Limache</div><h4>La casa roja</h4><p>Torre de piedra, escudo, tercer tiempo.</p></div>
+          </div>
+        </div>
+        <p class="muted" style="font-size:12.5px;margin-top:14px">Hover: la imagen acerca apenas y el texto de contexto se revela.</p>
+      </div>
+
+      <!-- constellation node -->
+      <div class="card-demo span6 reveal">
+        <div class="ttl">Nodo-estrella · camada <span class="tagn">/ reposo → hover</span></div>
+        <div class="constella" id="constella">
+          <div class="node">
+            <div class="dot"></div>
+            <div class="yr">Camada ’02</div>
+            <div class="meta">32 jugadores · 3 giras</div>
+          </div>
+          <div class="hint">Pasá el cursor — la estrella se enciende</div>
+        </div>
+      </div>
+
+      <!-- timeline item -->
+      <div class="card-demo span6 reveal d1">
+        <div class="ttl">Ítem de línea de tiempo <span class="tagn">/ historia</span></div>
+        <div class="tl">
+          <div class="ev"><div class="yr">1965</div><h4>Nace el club</h4><p>Fonzo, el turf y el hipódromo. El origen.</p></div>
+          <div class="ev"><div class="yr">1987</div><h4>La misa de Juan Pablo II</h4><p>Más de 500.000 personas. El hito inmersivo en rojo.</p></div>
+          <div class="ev"><div class="yr">2026</div><h4>M15 Campeón</h4><p>El presente que se pone la camiseta.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== MOTION ===== -->
+<section class="section motion" id="movimiento">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow reveal">05 · Movimiento</div>
+      <h2 class="reveal d1">El scroll es el narrador.</h2>
+    </div>
+    <div class="mgrid reveal d1">
+      <div class="mcard"><div class="ic">REVELACIÓN</div><h4>Entrada por scroll</h4><p>Los bloques aparecen con fade + ascenso al entrar en viewport. Las fotos pasan de desenfoque a foco.</p><code>opacity + translateY(34px)</code></div>
+      <div class="mcard"><div class="ic">EASING</div><h4>Peso y elegancia</h4><p>Nada lineal, nada rebote de juguete. Curva con inercia suave.</p><code>cubic-bezier(.2,.7,.2,1)</code></div>
+      <div class="mcard"><div class="ic">TRANSICIÓN</div><h4>Viaje continuo</h4><p>El color de fondo se funde entre secciones; sin cortes secos. La frontera es hospitalaria.</p><code>background 1.2s</code></div>
+      <div class="mcard"><div class="ic">FALLBACK</div><h4>Respeto y acceso</h4><p>Con <span class="mono" style="font-size:11px">reduce-motion</span> o sin JS, todo se ve en su estado final. El 3D/360° siempre tiene foto fija detrás.</p><code>prefers-reduced-motion</code></div>
+    </div>
+
+    <div class="demo-reveal reveal">
+      <div class="ic" style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.16em;color:#E9A24A">DEMO EN VIVO · REVELACIÓN ESCALONADA</div>
+      <div class="stage" id="revealStage">
+        <div class="w">frase 01</div><div class="w">frase 02</div><div class="w">frase 03</div><div class="w">frase 04</div>
+      </div>
+      <button class="replay" id="replayBtn">↻ Reproducir de nuevo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CLOSING ===== -->
+<section class="section closing" data-screen-label="Cierre">
+  <div class="hero-photo"><img src="assets/banderazo.png" alt="" /></div>
+  <div class="wrap inner">
+    <div class="eyebrow reveal" style="color:#fff">Sistema base · listo</div>
+    <h2 class="reveal d1">El sistema está <em>de pie.</em> ¿Avanzamos a las pantallas?</h2>
+    <p class="sub reveal d2">Con esta base —paleta, recorrido cromático, las dos voces y los componentes núcleo— armamos las 7 pantallas, de Home a “Sentir el Rojo”, en móvil, tablet y desktop. Decime qué ajustás antes de seguir.</p>
+    <div class="acts reveal d2">
+      <button class="btn btn-primary">Aprobar y arrancar Home <span class="arr">→</span></button>
+      <button class="btn btn-outline">Quiero ajustar el sistema</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="lg"><img src="assets/logo-jcs.png" alt="JCS" /><b>Jockey Club de Salta</b></div>
+        <p>Más que un club, una familia. El Rojo y Blanco desde 1965. Rugby · Hockey · Tenis · Golf · Hipoterapia · Squash.</p>
+      </div>
+      <div>
+        <h5>Sede Limache</h5>
+        <ul><li>Ruta 51 km 1</li><li>Av. Kennedy s/n</li><li>Salta, Argentina</li></ul>
+      </div>
+      <div>
+        <h5>Anexo Las Costas</h5>
+        <ul><li>San Lorenzo</li><li>Tel · WhatsApp</li><li>hola@jockeysalta.ar</li></ul>
+      </div>
+      <div>
+        <h5>Seguinos</h5>
+        <ul><li><a href="#">@jockeyclubsalta</a></li><li><a href="#">@jcs_hockey</a></li><li><a href="#">Sumate · Hacete socio</a></li></ul>
+      </div>
+    </div>
+    <div class="copy"><span>© 2026 Jockey Club de Salta · Sistema Visual Base v1</span><span>Diseño de alta fidelidad · documento de trabajo</span></div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.16, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>{ if(!el.classList.contains('in')) io.observe(el); });
+
+  // topbar state
+  const topbar = document.getElementById('topbar');
+  const hero = document.querySelector('.hero');
+  const onScroll = ()=>{
+    const past = window.scrollY > hero.offsetHeight - 90;
+    topbar.classList.toggle('solid', past);
+    topbar.classList.toggle('on-hero', !past);
+  };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  // sound toggle
+  const snd = document.getElementById('sndToggle');
+  const toggleSnd = ()=>{ const on = snd.classList.toggle('on'); snd.setAttribute('aria-checked', on?'true':'false'); };
+  snd.addEventListener('click', toggleSnd);
+  snd.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleSnd(); } });
+
+  // constellation drifting stars
+  const con = document.getElementById('constella');
+  for(let i=0;i<28;i++){
+    const s=document.createElement('span'); s.className='star';
+    const sz=Math.random()*2+1; s.style.width=sz+'px'; s.style.height=sz+'px';
+    s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+    s.style.opacity=(Math.random()*.5+.2).toFixed(2);
+    con.appendChild(s);
+  }
+
+  // staggered reveal demo
+  const stage = document.getElementById('revealStage');
+  const ws = [...stage.querySelectorAll('.w')];
+  function playReveal(){
+    ws.forEach(w=>w.classList.remove('in'));
+    ws.forEach((w,i)=> setTimeout(()=>w.classList.add('in'), 120 + i*220));
+  }
+  const demoIO = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ playReveal(); } }); },{threshold:.4});
+  demoIO.observe(stage);
+  document.getElementById('replayBtn').addEventListener('click', playReveal);
+</script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jockey Club de Salta · Todas las disciplinas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root{
+    --rojo:#B02A28;--rojo-deep:#9A2220;--vino:#B02A28;--vino-900:#B02A28;
+    --blanco:#FFFFFF;--crema:#F4EBDD;--crema-2:#ECDFC9;--crema-3:#E4D5BB;--tinta:#2A2320;--tinta-60:#6a605a;--tinta-40:#9e9690;--ocre:#C8862B;--ocre-2:#E9A24A;
+    --verde:#7d8d52;--azul-tenis:#3A6E8F;--vino-soft:#9A2220;
+    --shadow-warm:0 24px 60px -28px rgba(176,42,40,.45);--shadow-soft:0 14px 34px -16px rgba(42,35,32,.3);
+    --ease:cubic-bezier(.2,.7,.2,1);--maxw:1280px;--pad:clamp(20px,5vw,72px);
+    --accent:var(--rojo);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:120px}
+  body{background:var(--crema);color:var(--tinta);font-family:"Archivo",system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--rojo);color:#fff}
+  h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;font-weight:520;line-height:1;letter-spacing:-.02em;font-optical-sizing:auto}
+  .mono{font-family:"JetBrains Mono",monospace}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+  html.js .reveal{transform:translateY(16px);transition:transform 1s var(--ease)}
+  html.js .reveal.in{transform:none}
+  @media(prefers-reduced-motion:reduce){html.js .reveal{transform:none !important;transition:none}}
+
+  /* nav reuse */
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(18px,4vw,42px);transition:background .5s var(--ease),box-shadow .5s var(--ease),padding .5s var(--ease)}
+  .topbar.solid{background:rgba(244,235,221,.93);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(42,35,32,.1);padding-top:11px;padding-bottom:11px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand img{width:32px;height:32px}
+  .brand b{font-family:"Archivo";font-weight:700;font-size:13px;letter-spacing:.03em;color:var(--tinta)}
+  .brand .tag{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-60);border-left:1px solid rgba(42,35,32,.25);padding-left:11px}
+  @media(max-width:640px){.brand .tag{display:none}}
+  .nav-actions{display:flex;align-items:center;gap:12px}
+  .icon-btn{display:inline-flex;align-items:center;gap:9px;font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(42,35,32,.28);color:var(--tinta);background:transparent;border-radius:100px;padding:9px 16px;cursor:pointer;transition:.3s var(--ease)}
+  .icon-btn:hover{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+  .menu-btn .dots{display:flex;gap:3px}.menu-btn .dots i{width:4px;height:4px;border-radius:50%;background:currentColor;display:block}
+  .snd .eq{display:flex;align-items:flex-end;gap:2.5px;height:13px}.snd .eq i{width:2.5px;background:currentColor;height:30%;border-radius:2px}
+  .snd.on .eq i{animation:eq .9s ease-in-out infinite}
+  .snd.on .eq i:nth-child(2){animation-delay:.15s}.snd.on .eq i:nth-child(3){animation-delay:.3s}.snd.on .eq i:nth-child(4){animation-delay:.45s}
+  @keyframes eq{0%,100%{height:25%}50%{height:100%}}
+  @media(max-width:520px){.snd span:last-child{display:none}}
+
+  .overlay{position:fixed;inset:0;z-index:70;background:var(--vino-900);transform:translateY(-100%);transition:transform .7s var(--ease);display:flex;flex-direction:column;overflow-y:auto}
+  .overlay.open{transform:none}
+  .overlay-top{display:flex;align-items:center;justify-content:space-between;padding:18px clamp(18px,4vw,42px)}
+  .overlay-top .brand b{color:#fff}
+  .close-btn{font-family:"JetBrains Mono";font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.4);border-radius:100px;padding:9px 18px;cursor:pointer;transition:.3s var(--ease)}
+  .close-btn:hover{background:var(--rojo);border-color:var(--rojo)}
+  .overlay-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(16px,3vw,36px) clamp(18px,4vw,42px)}
+  .ov-item{display:flex;align-items:center;gap:clamp(16px,3vw,34px);padding:clamp(11px,1.5vw,18px) 8px;border-top:1px solid rgba(255,255,255,.12);cursor:pointer;transition:.4s var(--ease)}
+  .ov-item:last-child{border-bottom:1px solid rgba(255,255,255,.12)}
+  .ov-item.active{background:rgba(255,255,255,.05)}
+  .ov-item .thumb{width:clamp(54px,7vw,88px);height:clamp(40px,5vw,60px);border-radius:9px;object-fit:cover;flex-shrink:0;filter:grayscale(.4) brightness(.85);transition:.45s var(--ease)}
+  .ov-item .swt{width:clamp(54px,7vw,88px);height:clamp(40px,5vw,60px);border-radius:9px;flex-shrink:0;background:radial-gradient(circle at 60% 30%,#B02A28,#B02A28)}
+  .ov-item .lab{font-family:"Fraunces";font-size:clamp(26px,4.6vw,54px);font-weight:480;color:#fff;letter-spacing:-.02em;line-height:1;transition:.4s var(--ease)}
+  .ov-item .desc{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.1em;color:rgba(255,255,255,.5);text-transform:uppercase;margin-left:auto;text-align:right;display:none}
+  @media(min-width:900px){.ov-item .desc{display:block}}
+  .ov-item .idx{font-family:"JetBrains Mono";font-size:12px;color:var(--ocre);width:30px;flex-shrink:0}
+  .ov-item:hover{padding-left:24px}.ov-item:hover .lab{color:var(--ocre)}.ov-item:hover .thumb{filter:none;transform:scale(1.05)}
+
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--accent,var(--rojo));z-index:65;width:0;transition:width .1s linear,background .5s}
+
+  /* ===== HERO ===== */
+  .phero{position:relative;padding:clamp(120px,16vw,200px) 0 clamp(30px,5vw,60px)}
+  .phero .eye{font-family:"JetBrains Mono";font-size:12.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--rojo);margin-bottom:24px}
+  .phero h1{font-size:clamp(52px,12vw,164px);font-weight:500;line-height:.92;letter-spacing:-.035em;text-wrap:balance}
+  .phero h1 em{font-style:italic;font-weight:380;color:var(--rojo)}
+  .phero .sub{margin-top:clamp(22px,3vw,34px);max-width:62ch;font-size:clamp(17px,1.9vw,21px);color:var(--tinta-60);font-weight:380}
+  .phero .meta{margin-top:30px;display:flex;gap:34px;flex-wrap:wrap;font-family:"JetBrains Mono";font-size:12px;letter-spacing:.05em;color:var(--tinta-60)}
+  .phero .meta span b{color:var(--rojo);font-weight:600;font-size:14px}
+
+  /* ===== STICKY TABS ===== */
+  .tabs{position:sticky;top:64px;z-index:50;background:rgba(244,235,221,.92);backdrop-filter:blur(14px);border-top:1px solid rgba(42,35,32,.08);border-bottom:1px solid rgba(42,35,32,.08);transition:top .35s var(--ease)}
+  .tabs.solid{top:60px}
+  .tabs-inner{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding:6px 0}
+  .tabs-inner::-webkit-scrollbar{display:none}
+  .tab{flex-shrink:0;font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;background:transparent;border:none;cursor:pointer;color:var(--tinta-60);padding:14px 18px;display:flex;align-items:center;gap:9px;transition:.3s var(--ease);border-radius:8px;position:relative;font-weight:500}
+  .tab .dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.35;transition:.3s var(--ease)}
+  .tab:hover{color:var(--tinta)}
+  .tab.active{color:var(--accent-tab,var(--rojo))}
+  .tab.active .dot{opacity:1;box-shadow:0 0 0 3px color-mix(in srgb,currentColor 18%,transparent)}
+  .tab[data-d="rugby"]{--accent-tab:var(--rojo)}
+  .tab[data-d="hockey"]{--accent-tab:var(--ocre)}
+  .tab[data-d="tenis"]{--accent-tab:var(--azul-tenis)}
+  .tab[data-d="golf"]{--accent-tab:var(--verde)}
+  .tab[data-d="hipoterapia"]{--accent-tab:var(--vino-soft)}
+  .tab[data-d="squash"]{--accent-tab:var(--tinta)}
+
+  /* ===== DISCIPLINE SECTION ===== */
+  .disc{padding:clamp(70px,9vw,110px) 0;scroll-margin-top:140px}
+  .disc + .disc{border-top:1px solid rgba(42,35,32,.1)}
+  .disc[data-d="rugby"]{--accent:var(--rojo)}
+  .disc[data-d="hockey"]{--accent:var(--ocre)}
+  .disc[data-d="tenis"]{--accent:var(--azul-tenis)}
+  .disc[data-d="golf"]{--accent:var(--verde)}
+  .disc[data-d="hipoterapia"]{--accent:var(--vino-soft)}
+  .disc[data-d="squash"]{--accent:var(--tinta)}
+
+  .disc-head{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(28px,4vw,56px);align-items:center}
+  @media(max-width:880px){.disc-head{grid-template-columns:1fr}}
+  .disc .num{font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.22em;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .disc .num::before{content:"";width:24px;height:1.5px;background:var(--accent)}
+  .disc h2{font-size:clamp(44px,7.5vw,110px);font-weight:480;letter-spacing:-.035em;line-height:.9;color:var(--tinta)}
+  .disc h2 em{font-style:italic;color:var(--accent);font-weight:380}
+  .disc .lede{margin-top:20px;color:var(--tinta-60);font-size:17px;max-width:50ch}
+  .disc .meta-row{margin-top:24px;display:flex;flex-wrap:wrap;gap:8px}
+  .disc .meta-row span{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.05em;color:var(--tinta);background:rgba(42,35,32,.06);border-radius:100px;padding:7px 13px;text-transform:uppercase}
+  .disc .meta-row span b{color:var(--accent);font-weight:600}
+
+  .dmedia{position:relative;border-radius:16px;overflow:hidden;background:#B02A28;aspect-ratio:4/5;box-shadow:var(--shadow-warm)}
+  .dmedia img{width:100%;height:100%;object-fit:cover;transition:transform 1.5s var(--ease)}
+  .dmedia:hover img{transform:scale(1.04)}
+  .dmedia.tall{aspect-ratio:3/4}
+  .dmedia.wide{aspect-ratio:5/4}
+  .dmedia .badge{position:absolute;top:18px;left:18px;background:#fff;color:var(--accent);font-family:"JetBrains Mono";font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 13px;border-radius:100px;z-index:2;font-weight:500;display:flex;align-items:center;gap:8px}
+  .dmedia .badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .dph{position:relative;border-radius:16px;border:1px dashed rgba(42,35,32,.28);background:repeating-linear-gradient(135deg,#e8dac2,#e8dac2 13px,#e2d2b6 13px,#e2d2b6 26px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#94886f;aspect-ratio:4/5;text-align:center;padding:24px;box-shadow:var(--shadow-soft)}
+  .dph.tall{aspect-ratio:3/4}.dph.wide{aspect-ratio:5/4}
+  .dph .ic{width:30px;height:30px;border:1.5px solid #b3a588;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#a3957a}
+  .dph .tag{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.1em;color:#8a7e66}
+  .dph .hint{font-size:11.5px;color:#a89a80;max-width:24ch}
+
+  /* DATA LAYER (horarios + fixtures) */
+  .data-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,3vw,38px);margin-top:clamp(36px,5vw,60px)}
+  @media(max-width:880px){.data-grid{grid-template-columns:1fr}}
+  .data-card{background:#fff;border:1px solid rgba(42,35,32,.1);border-radius:16px;padding:clamp(22px,3vw,30px);box-shadow:var(--shadow-soft)}
+  .data-card h3{font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;font-weight:500;display:flex;justify-content:space-between;align-items:baseline}
+  .data-card h3 span{font-family:"Archivo";font-size:13px;text-transform:none;letter-spacing:0;color:var(--tinta-60);font-weight:400}
+
+  /* horarios */
+  .horarios{display:flex;flex-direction:column;gap:0}
+  .hr-row{display:grid;grid-template-columns:78px 1fr auto;gap:14px;padding:14px 0;border-bottom:1px dashed rgba(42,35,32,.16);align-items:center}
+  .hr-row:last-child{border-bottom:none}
+  .hr-row .cat{font-family:"Fraunces";font-size:17px;font-weight:540;color:var(--tinta);letter-spacing:-.005em}
+  .hr-row .days{font-size:14px;color:var(--tinta-60)}
+  .hr-row .hr{font-family:"JetBrains Mono";font-size:12px;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);border-radius:6px;padding:5px 10px;letter-spacing:.04em;font-weight:500}
+
+  /* fixtures */
+  .fix-row{display:grid;grid-template-columns:54px 1fr auto 32px;gap:14px;padding:14px 0;border-bottom:1px dashed rgba(42,35,32,.16);align-items:center}
+  .fix-row:last-child{border-bottom:none}
+  .fix-row .dt{text-align:center}
+  .fix-row .dt .d{font-family:"Fraunces";font-size:22px;font-weight:400;line-height:1;color:var(--tinta);letter-spacing:-.01em}
+  .fix-row .dt .m{font-family:"JetBrains Mono";font-size:10px;color:var(--accent);letter-spacing:.1em;margin-top:3px}
+  .fix-row .mt{font-family:"Archivo";font-size:14.5px;font-weight:500;color:var(--tinta)}
+  .fix-row .mt small{display:block;color:var(--tinta-60);font-weight:400;font-size:12.5px;margin-top:3px}
+  .fix-row .res{font-family:"JetBrains Mono";font-size:13px;color:var(--accent);font-weight:600;letter-spacing:.02em;background:color-mix(in srgb,var(--accent) 10%,transparent);padding:4px 10px;border-radius:6px}
+  .fix-row .ar{font-family:"JetBrains Mono";font-size:10px;color:var(--tinta-60);text-align:center}
+  .fix-row.lose .res{color:var(--tinta-60);background:rgba(42,35,32,.05)}
+
+  /* standings */
+  .stand{font-family:"Archivo"}
+  .st-row{display:grid;grid-template-columns:30px 1fr auto auto;gap:10px;padding:10px 0;border-bottom:1px dashed rgba(42,35,32,.16);align-items:center;font-size:14px}
+  .st-row.head{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.12em;color:var(--tinta-60);text-transform:uppercase;border-bottom:1.5px solid var(--accent);font-weight:500}
+  .st-row .pos{font-family:"Fraunces";font-size:15px;font-weight:500;color:var(--tinta-60)}
+  .st-row.us{background:color-mix(in srgb,var(--accent) 10%,transparent);margin:0 -10px;padding-left:10px;padding-right:10px;border-radius:8px}
+  .st-row.us .pos{color:var(--accent);font-weight:600}
+  .st-row .nm{font-weight:500;color:var(--tinta)}
+  .st-row.us .nm{color:var(--accent);font-weight:600}
+  .st-row .pts{font-family:"JetBrains Mono";font-size:13px;color:var(--tinta)}
+  .st-row .games{font-family:"JetBrains Mono";font-size:11px;color:var(--tinta-60);text-align:right;min-width:40px}
+
+  /* footer / pager */
+  .pager{border-top:1px solid rgba(42,35,32,.14);display:grid;grid-template-columns:1fr 1fr;background:var(--crema)}
+  .pager a{padding:clamp(28px,4vw,48px) var(--pad);transition:background .4s var(--ease);display:flex;flex-direction:column;gap:8px}
+  .pager a:hover{background:var(--crema-2)}
+  .pager a.next{text-align:right;border-left:1px solid rgba(42,35,32,.14)}
+  .pager .dir{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-60)}
+  .pager .ttl{font-family:"Fraunces";font-size:clamp(24px,3.4vw,40px);font-weight:500;letter-spacing:-.01em}
+  .pager a:hover .ttl{color:var(--rojo)}
+
+  footer.foot{background:var(--vino-900);color:rgba(255,255,255,.86);padding:60px 0 38px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+  @media(max-width:860px){.foot-grid{grid-template-columns:1fr 1fr;gap:30px}}
+  @media(max-width:520px){.foot-grid{grid-template-columns:1fr}}
+  .foot .lg{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .foot .lg img{width:40px;height:40px;background:#fff;border-radius:8px;padding:5px}
+  .foot .lg b{font-family:"Fraunces";font-size:18px;font-weight:520;color:#fff}
+  .foot p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.66)}
+  .foot h5{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ocre);margin-bottom:14px}
+  .foot ul{list-style:none}.foot ul li{padding:5px 0;font-size:14px;color:rgba(255,255,255,.76)}
+  .foot ul li a:hover{color:#fff;text-decoration:underline}
+  .foot .cta{margin-top:18px;display:inline-flex;align-items:center;gap:10px;background:var(--rojo);color:#fff;font-family:"Archivo";font-weight:600;font-size:14px;border-radius:100px;padding:11px 20px;transition:.35s var(--ease)}
+  .foot .cta:hover{background:var(--rojo-deep)}
+  .foot .copy{border-top:1px solid rgba(255,255,255,.12);margin-top:42px;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:"JetBrains Mono";font-size:11px;color:rgba(255,255,255,.45)}
+</style>
+</head>
+<body id="top">
+<div class="progress" id="progress"></div>
+
+<!-- NAV -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html"><img src="assets/logo-jcs.png" alt="Escudo JCS" /><b>JOCKEY CLUB DE SALTA</b><span class="tag">05 · Disciplinas</span></a>
+  <div class="nav-actions">
+    <button class="icon-btn snd" id="snd" role="switch" aria-checked="false"><span class="eq"><i></i><i></i><i></i><i></i></span><span>Sonido</span></button>
+    <button class="icon-btn menu-btn" id="openMenu">Menú <span class="dots"><i></i><i></i><i></i></span></button>
+  </div>
+</header>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="overlay-top">
+    <a class="brand" href="index.html"><img src="assets/logo-jcs.png" alt="JCS" style="width:32px;height:32px" /><b>JOCKEY CLUB DE SALTA</b></a>
+    <button class="close-btn" id="closeMenu">Cerrar ✕</button>
+  </div>
+  <div class="overlay-body">
+    <a class="ov-item" href="historia-viva.html"><span class="idx">01</span><img class="thumb" src="assets/plantel-m15.png" alt="" /><span class="lab">Historia viva</span><span class="desc">1965 → hoy</span></a>
+    <a class="ov-item" href="las-camadas.html"><span class="idx">02</span><span class="swt"></span><span class="lab">Las camadas</span><span class="desc">La constelación</span></a>
+    <a class="ov-item" href="los-espacios.html"><span class="idx">03</span><img class="thumb" src="assets/casa-club.png" alt="" /><span class="lab">Los espacios</span><span class="desc">Cancha 1 · La casa roja</span></a>
+    <a class="ov-item" href="vida-social.html"><span class="idx">04</span><img class="thumb" src="assets/tercer-tiempo.png" alt="" /><span class="lab">Vida social</span><span class="desc">El tercer tiempo</span></a>
+    <a class="ov-item active" href="#"><span class="idx">05</span><img class="thumb" src="assets/golf.png" alt="" /><span class="lab">Disciplinas</span><span class="desc">Seis deportes</span></a>
+    <a class="ov-item" href="sentir-el-rojo.html"><span class="idx">06</span><img class="thumb" src="assets/banderazo.png" alt="" /><span class="lab">Sentir el Rojo</span><span class="desc">La experiencia</span></a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="phero" data-screen-label="Disciplinas · Hero">
+  <div class="wrap">
+    <div class="eye">05 · Seis deportes · una familia</div>
+    <h1>Las <em>disciplinas.</em></h1>
+    <p class="sub">Cada deporte tiene su voz, su horario, su tribuna. El rugby pone el pulmón, el hockey el corazón femenino, el golf el tiempo lento, la hipoterapia la calma. Misma camiseta.</p>
+    <div class="meta">
+      <span><b>6</b> disciplinas</span>
+      <span><b>~1.800</b> socios activos</span>
+      <span><b>5</b> categorías rugby</span>
+    </div>
+  </div>
+</section>
+
+<!-- STICKY TABS -->
+<nav class="tabs" id="tabs">
+  <div class="wrap">
+    <div class="tabs-inner">
+      <button class="tab active" data-d="rugby"><span class="dot"></span>Rugby</button>
+      <button class="tab" data-d="hockey"><span class="dot"></span>Hockey femenino</button>
+      <button class="tab" data-d="tenis"><span class="dot"></span>Tenis</button>
+      <button class="tab" data-d="golf"><span class="dot"></span>Golf</button>
+      <button class="tab" data-d="hipoterapia"><span class="dot"></span>Hipoterapia</button>
+      <button class="tab" data-d="squash"><span class="dot"></span>Squash</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== RUGBY ===== -->
+<section class="disc" id="rugby" data-d="rugby" data-screen-label="Disciplina · Rugby">
+  <div class="wrap">
+    <div class="disc-head">
+      <div>
+        <div class="num">01 · El deporte fundacional</div>
+        <h2>Rugby <em>—</em><br/>el pulmón.</h2>
+        <p class="lede">La cantera que dio dos Pumas, los entrenamientos de los martes y los jueves a las siete, y la Cancha 1 los sábados. La columna vertebral del club.</p>
+        <div class="meta-row">
+          <span><b>5</b> categorías</span>
+          <span><b>~250</b> jugadores</span>
+          <span><b>WERE</b> · M15 campeón 2026</span>
+          <span><b>2</b> Pumas formados</span>
+        </div>
+      </div>
+      <div class="dmedia"><img src="assets/salida-plantel.png" alt="El plantel saliendo a la cancha" /><div class="badge">Sábados · Cancha 1</div></div>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-card">
+        <h3>Horarios de práctica <span>Limache · Cancha 1 y auxiliares</span></h3>
+        <div class="horarios">
+          <div class="hr-row"><div class="cat">Primera</div><div class="days">Lun · Mié · Vie</div><div class="hr">19:00 — 21:00</div></div>
+          <div class="hr-row"><div class="cat">M19</div><div class="days">Mar · Jue</div><div class="hr">19:30 — 21:00</div></div>
+          <div class="hr-row"><div class="cat">M17</div><div class="days">Mar · Jue</div><div class="hr">19:00 — 20:30</div></div>
+          <div class="hr-row"><div class="cat">M15</div><div class="days">Mar · Jue</div><div class="hr">18:30 — 20:00</div></div>
+          <div class="hr-row"><div class="cat">M13 / M14</div><div class="days">Mar · Jue</div><div class="hr">18:00 — 19:30</div></div>
+          <div class="hr-row"><div class="cat">Infantiles</div><div class="days">Sábados</div><div class="hr">10:00 — 12:00</div></div>
+        </div>
+      </div>
+      <div class="data-card">
+        <h3>Próximos partidos <span>Primera · Regional NOA</span></h3>
+        <div>
+          <div class="fix-row"><div class="dt"><div class="d">14</div><div class="m">JUN</div></div><div class="mt">JCS vs Tucumán Rugby<small>Cancha 1 · 16hs · Final regional</small></div><div class="res">LOCAL</div><div class="ar">16:00</div></div>
+          <div class="fix-row"><div class="dt"><div class="d">21</div><div class="m">JUN</div></div><div class="mt">Universitario vs JCS<small>Tucumán · 15:30hs</small></div><div class="res">VISITA</div><div class="ar">15:30</div></div>
+          <div class="fix-row"><div class="dt"><div class="d">28</div><div class="m">JUN</div></div><div class="mt">JCS vs Los Tarcos<small>Cancha 1 · 16hs</small></div><div class="res">LOCAL</div><div class="ar">16:00</div></div>
+        </div>
+        <h3 style="margin-top:24px">Posiciones · Regional NOA</h3>
+        <div class="stand">
+          <div class="st-row head"><div class="pos">Pos</div><div class="nm">Equipo</div><div class="pts">Pts</div><div class="games">PJ</div></div>
+          <div class="st-row"><div class="pos">1</div><div class="nm">Tucumán Rugby</div><div class="pts">42</div><div class="games">10</div></div>
+          <div class="st-row us"><div class="pos">2</div><div class="nm">Jockey Club de Salta</div><div class="pts">38</div><div class="games">10</div></div>
+          <div class="st-row"><div class="pos">3</div><div class="nm">Universitario</div><div class="pts">35</div><div class="games">10</div></div>
+          <div class="st-row"><div class="pos">4</div><div class="nm">Los Tarcos</div><div class="pts">30</div><div class="games">10</div></div>
+          <div class="st-row"><div class="pos">5</div><div class="nm">Natación y Gimnasia</div><div class="pts">26</div><div class="games">10</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOCKEY ===== -->
+<section class="disc" id="hockey" data-d="hockey" data-screen-label="Disciplina · Hockey">
+  <div class="wrap">
+    <div class="disc-head">
+      <div>
+        <div class="num">02 · El corazón femenino</div>
+        <h2>Hockey<br/><em>femenino.</em></h2>
+        <p class="lede">Dos canchas de césped sintético, tres categorías formativas y una primera que acumula títulos provinciales. El crecimiento sostenido del club.</p>
+        <div class="meta-row">
+          <span><b>4</b> categorías</span>
+          <span><b>~120</b> jugadoras</span>
+          <span><b>2</b> canchas sintéticas</span>
+          <span><b>3</b> títulos provinciales</span>
+        </div>
+      </div>
+      <div class="dph"><div class="ic">▦</div><div class="tag">[ FOTO_HOCKEY_PLANTEL ]</div><div class="hint">Plantel femenino de primera</div></div>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-card">
+        <h3>Horarios de práctica <span>Cancha sintética 1 y 2</span></h3>
+        <div class="horarios">
+          <div class="hr-row"><div class="cat">Primera</div><div class="days">Lun · Mié · Vie</div><div class="hr">19:30 — 21:00</div></div>
+          <div class="hr-row"><div class="cat">Sub-19</div><div class="days">Mar · Jue</div><div class="hr">19:00 — 20:30</div></div>
+          <div class="hr-row"><div class="cat">Sub-16</div><div class="days">Mar · Jue</div><div class="hr">18:30 — 20:00</div></div>
+          <div class="hr-row"><div class="cat">Sub-14</div><div class="days">Mar · Jue</div><div class="hr">18:00 — 19:30</div></div>
+          <div class="hr-row"><div class="cat">Infantiles</div><div class="days">Sábados</div><div class="hr">10:00 — 12:00</div></div>
+        </div>
+      </div>
+      <div class="data-card">
+        <h3>Posiciones · Asociación Salteña <span>Primera</span></h3>
+        <div class="stand">
+          <div class="st-row head"><div class="pos">Pos</div><div class="nm">Equipo</div><div class="pts">Pts</div><div class="games">PJ</div></div>
+          <div class="st-row us"><div class="pos">1</div><div class="nm">JCS Hockey</div><div class="pts">28</div><div class="games">8</div></div>
+          <div class="st-row"><div class="pos">2</div><div class="nm">Gimnasia y Tiro</div><div class="pts">24</div><div class="games">8</div></div>
+          <div class="st-row"><div class="pos">3</div><div class="nm">Universitario</div><div class="pts">22</div><div class="games">8</div></div>
+          <div class="st-row"><div class="pos">4</div><div class="nm">Lawn Tennis</div><div class="pts">18</div><div class="games">8</div></div>
+        </div>
+        <h3 style="margin-top:24px">Próximo partido</h3>
+        <div class="fix-row" style="border-bottom:none"><div class="dt"><div class="d">02</div><div class="m">AGO</div></div><div class="mt">JCS vs Gimnasia y Tiro<small>Cancha sintética 1 · 18hs · Provincial</small></div><div class="res">LOCAL</div><div class="ar">18:00</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TENIS ===== -->
+<section class="disc" id="tenis" data-d="tenis" data-screen-label="Disciplina · Tenis">
+  <div class="wrap">
+    <div class="disc-head">
+      <div>
+        <div class="num">03 · Nueve canchas, todas las edades</div>
+        <h2>Tenis.</h2>
+        <p class="lede">Cinco canchas de polvo de ladrillo, cuatro rápidas, una escuela de menores y un ranking interno que se discute en el bar. El deporte del sábado a la mañana.</p>
+        <div class="meta-row">
+          <span><b>9</b> canchas</span>
+          <span><b>5</b> polvo · <b>4</b> rápidas</span>
+          <span>Escuela <b>5 a 16 años</b></span>
+          <span>Ranking interno · 4 categorías</span>
+        </div>
+      </div>
+      <div class="dph"><div class="ic">▦</div><div class="tag">[ FOTO_TENIS_CANCHAS ]</div><div class="hint">Las nueve canchas vistas desde la torre</div></div>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-card">
+        <h3>Horarios <span>Reservas en secretaría</span></h3>
+        <div class="horarios">
+          <div class="hr-row"><div class="cat">Escuela menores</div><div class="days">Mar · Jue · Sáb</div><div class="hr">17:00 — 19:00</div></div>
+          <div class="hr-row"><div class="cat">Clases adultos</div><div class="days">Lun · Mié · Vie</div><div class="hr">19:00 — 21:00</div></div>
+          <div class="hr-row"><div class="cat">Cancha libre</div><div class="days">Todos los días</div><div class="hr">07:00 — 23:00</div></div>
+          <div class="hr-row"><div class="cat">Torneo interno</div><div class="days">Sábados</div><div class="hr">09:00 — 13:00</div></div>
+        </div>
+      </div>
+      <div class="data-card">
+        <h3>Ranking interno · Categoría A <span>Top 5 · temporada 2026</span></h3>
+        <div class="stand">
+          <div class="st-row head"><div class="pos">Pos</div><div class="nm">Jugador</div><div class="pts">Pts</div><div class="games">Vict.</div></div>
+          <div class="st-row"><div class="pos">1</div><div class="nm">Tomás Avellaneda</div><div class="pts">1.240</div><div class="games">18</div></div>
+          <div class="st-row"><div class="pos">2</div><div class="nm">Joaquín Pérez</div><div class="pts">1.180</div><div class="games">16</div></div>
+          <div class="st-row"><div class="pos">3</div><div class="nm">Federico Saravia</div><div class="pts">1.060</div><div class="games">14</div></div>
+          <div class="st-row"><div class="pos">4</div><div class="nm">Lautaro Rojas</div><div class="pts">980</div><div class="games">13</div></div>
+          <div class="st-row"><div class="pos">5</div><div class="nm">Manuel López</div><div class="pts">920</div><div class="games">12</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GOLF ===== -->
+<section class="disc" id="golf" data-d="golf" data-screen-label="Disciplina · Golf">
+  <div class="wrap">
+    <div class="disc-head">
+      <div>
+        <div class="num">04 · El verde lento</div>
+        <h2>Golf<br /><em>· 18 hoyos.</em></h2>
+        <p class="lede">Cinco horas de juego entre el cerro y la laguna del hoyo 14. La disciplina del tiempo largo y la conversación pausada. Drives largos, putts cortos, asado al final.</p>
+        <div class="meta-row">
+          <span><b>18</b> hoyos · Par 72</span>
+          <span>Driving range <b>280m</b></span>
+          <span>Putting green <b>1.200m²</b></span>
+          <span>Handicap mínimo: <b>36</b></span>
+        </div>
+      </div>
+      <div class="dmedia"><img src="assets/golf.png" alt="Cancha de golf con cerro al fondo" /><div class="badge">Par 72 · 18 hoyos</div></div>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-card">
+        <h3>Tee times <span>Reserva online o secretaría</span></h3>
+        <div class="horarios">
+          <div class="hr-row"><div class="cat">Apertura</div><div class="days">Todos los días</div><div class="hr">07:00</div></div>
+          <div class="hr-row"><div class="cat">Cierre</div><div class="days">Verano</div><div class="hr">19:30</div></div>
+          <div class="hr-row"><div class="cat">Cierre</div><div class="days">Invierno</div><div class="hr">17:30</div></div>
+          <div class="hr-row"><div class="cat">Clases</div><div class="days">Mar · Jue · Sáb</div><div class="hr">08:00 — 11:00</div></div>
+          <div class="hr-row"><div class="cat">Torneo socios</div><div class="days">Primer dom · mes</div><div class="hr">08:00</div></div>
+        </div>
+      </div>
+      <div class="data-card">
+        <h3>Ranking handicap · Top 5 <span>Categoría A · temporada</span></h3>
+        <div class="stand">
+          <div class="st-row head"><div class="pos">Pos</div><div class="nm">Socio</div><div class="pts">HCP</div><div class="games">Vts.</div></div>
+          <div class="st-row"><div class="pos">1</div><div class="nm">Fernando Costas</div><div class="pts">2.4</div><div class="games">48</div></div>
+          <div class="st-row"><div class="pos">2</div><div class="nm">Marcos Ibarra</div><div class="pts">3.1</div><div class="games">46</div></div>
+          <div class="st-row"><div class="pos">3</div><div class="nm">Pablo Romano</div><div class="pts">4.8</div><div class="games">42</div></div>
+          <div class="st-row"><div class="pos">4</div><div class="nm">Diego Aguirre</div><div class="pts">5.2</div><div class="games">40</div></div>
+          <div class="st-row"><div class="pos">5</div><div class="nm">Hernán Beltrán</div><div class="pts">6.0</div><div class="games">38</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HIPOTERAPIA ===== -->
+<section class="disc" id="hipoterapia" data-d="hipoterapia" data-screen-label="Disciplina · Hipoterapia">
+  <div class="wrap">
+    <div class="disc-head">
+      <div>
+        <div class="num">05 · La calma</div>
+        <h2>Hipo<em>terapia.</em></h2>
+        <p class="lede">El programa más íntimo del club. Terapia ecuestre orientada a niños y adolescentes con discapacidad motora o cognitiva. Gratuita para socios, abierta a la comunidad bajo derivación médica.</p>
+        <div class="meta-row">
+          <span><b>1</b> picadero techado</span>
+          <span><b>4</b> caballos</span>
+          <span><b>Gratuita</b> para socios</span>
+          <span>Coordinación con CILSA</span>
+        </div>
+      </div>
+      <div class="dph"><div class="ic">▦</div><div class="tag">[ FOTO_HIPOTERAPIA ]</div><div class="hint">Sesión en el picadero techado</div></div>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-card">
+        <h3>Sesiones <span>Coordinación · secretaría 0387 · 412-XXXX</span></h3>
+        <div class="horarios">
+          <div class="hr-row"><div class="cat">Sesiones</div><div class="days">Lun a Vie</div><div class="hr">09:00 — 12:00</div></div>
+          <div class="hr-row"><div class="cat">Sesiones</div><div class="days">Mar · Jue</div><div class="hr">15:00 — 18:00</div></div>
+          <div class="hr-row"><div class="cat">Evaluación inicial</div><div class="days">Con turno previo</div><div class="hr">A coordinar</div></div>
+        </div>
+      </div>
+      <div class="data-card">
+        <h3>Equipo · staff <span>Profesionales matriculados</span></h3>
+        <div class="horarios">
+          <div class="hr-row"><div class="cat">Coordinación</div><div class="days">Lic. Carolina M.</div><div class="hr">Kinesióloga</div></div>
+          <div class="hr-row"><div class="cat">Equinoterapista</div><div class="days">Lic. Pablo S.</div><div class="hr">Certificado IATE</div></div>
+          <div class="hr-row"><div class="cat">Voluntariado</div><div class="days">Socios M17/M19</div><div class="hr">Sábados</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SQUASH ===== -->
+<section class="disc" id="squash" data-d="squash" data-screen-label="Disciplina · Squash">
+  <div class="wrap">
+    <div class="disc-head">
+      <div>
+        <div class="num">06 · Indoor</div>
+        <h2>Squash.</h2>
+        <p class="lede">Cuatro canchas vidriadas, ligas internas que arrancan en marzo y partidos los miércoles a la noche. El deporte del invierno.</p>
+        <div class="meta-row">
+          <span><b>4</b> canchas indoor</span>
+          <span>Liga interna <b>todo el año</b></span>
+          <span>Open de invierno · Jul</span>
+        </div>
+      </div>
+      <div class="dph"><div class="ic">▦</div><div class="tag">[ FOTO_SQUASH ]</div><div class="hint">Las cuatro canchas vidriadas</div></div>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-card">
+        <h3>Horarios <span>Reservas online o secretaría</span></h3>
+        <div class="horarios">
+          <div class="hr-row"><div class="cat">Cancha libre</div><div class="days">Todos los días</div><div class="hr">07:00 — 23:00</div></div>
+          <div class="hr-row"><div class="cat">Clases</div><div class="days">Lun · Mié</div><div class="hr">19:00 — 21:00</div></div>
+          <div class="hr-row"><div class="cat">Liga interna</div><div class="days">Miércoles noche</div><div class="hr">20:00 — 22:30</div></div>
+        </div>
+      </div>
+      <div class="data-card">
+        <h3>Liga interna · Categoría A <span>Top 5 · 2026</span></h3>
+        <div class="stand">
+          <div class="st-row head"><div class="pos">Pos</div><div class="nm">Jugador</div><div class="pts">Pts</div><div class="games">Vict.</div></div>
+          <div class="st-row"><div class="pos">1</div><div class="nm">Sebastián Villalba</div><div class="pts">96</div><div class="games">12</div></div>
+          <div class="st-row"><div class="pos">2</div><div class="nm">Iván Morales</div><div class="pts">88</div><div class="games">11</div></div>
+          <div class="st-row"><div class="pos">3</div><div class="nm">Cristian Frías</div><div class="pts">72</div><div class="games">9</div></div>
+          <div class="st-row"><div class="pos">4</div><div class="nm">Bruno Vargas</div><div class="pts">64</div><div class="games">8</div></div>
+          <div class="st-row"><div class="pos">5</div><div class="nm">Lucas Aguirre</div><div class="pts">56</div><div class="games">7</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGER -->
+<nav class="pager">
+  <a href="vida-social.html"><span class="dir">← Volver · 04</span><span class="ttl">Vida social</span></a>
+  <a class="next" href="sentir-el-rojo.html"><span class="dir">Siguiente · 06 →</span><span class="ttl">Sentir el Rojo</span></a>
+</nav>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="lg"><img src="assets/logo-jcs.png" alt="JCS" /><b>Jockey Club de Salta</b></div>
+        <p>Más que un club, una familia. El Rojo y Blanco desde 1965.</p>
+        <a class="cta" href="#">Sumate · Hacete socio →</a>
+      </div>
+      <div><h5>Sede Limache</h5><ul><li>Ruta 51 km 1</li><li>Av. Kennedy s/n</li><li>Salta, Argentina</li></ul></div>
+      <div><h5>Anexo Las Costas</h5><ul><li>San Lorenzo</li><li>Tel · WhatsApp</li><li>hola@jockeysalta.ar</li></ul></div>
+      <div><h5>Seguinos</h5><ul><li><a href="#">@jockeyclubsalta</a></li><li><a href="#">@jcs_hockey</a></li></ul></div>
+    </div>
+    <div class="copy"><span>© 2026 Jockey Club de Salta</span><span>05 · Las disciplinas · diseño de alta fidelidad</span></div>
+  </div>
+</footer>
+
+<script>
+  const overlay=document.getElementById('overlay');
+  document.getElementById('openMenu').addEventListener('click',()=>{overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'});
+  const closeM=()=>{overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=''};
+  document.getElementById('closeMenu').addEventListener('click',closeM);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+  const snd=document.getElementById('snd');
+  snd.addEventListener('click',()=>{const on=snd.classList.toggle('on');snd.setAttribute('aria-checked',on?'true':'false')});
+  const topbar=document.getElementById('topbar');
+  const progress=document.getElementById('progress');
+  const tabsEl=document.getElementById('tabs');
+  const tabs=[...document.querySelectorAll('.tab')];
+  const sections=[...document.querySelectorAll('.disc')];
+  const accents={rugby:'#B02A28',hockey:'#C8862B',tenis:'#3A6E8F',golf:'#7d8d52',hipoterapia:'#9A2220',squash:'#2A2320'};
+  function onScroll(){
+    topbar.classList.toggle('solid',window.scrollY>120);
+    tabsEl.classList.toggle('solid',window.scrollY>120);
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    progress.style.width=(h>0?(window.scrollY/h*100):0)+'%';
+    // active tab by current section
+    const mid=window.scrollY+window.innerHeight*0.32;
+    let cur=sections[0].dataset.d;
+    sections.forEach(s=>{if(s.offsetTop<=mid)cur=s.dataset.d});
+    tabs.forEach(t=>t.classList.toggle('active',t.dataset.d===cur));
+    document.documentElement.style.setProperty('--accent',accents[cur]||'#B02A28');
+  }
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    const el=document.getElementById(t.dataset.d);
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+</script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jockey Club de Salta · Sentir el Rojo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root{
+    --rojo:#B02A28;--rojo-deep:#9A2220;--rojo-hot:#E23A33;--vino:#B02A28;--vino-900:#B02A28;
+    --blanco:#FFFFFF;--crema:#F4EBDD;--tinta:#2A2320;--tinta-60:#6a605a;--ocre:#C8862B;--ocre-2:#E9A24A;
+    --ease:cubic-bezier(.2,.7,.2,1);--maxw:1280px;--pad:clamp(20px,5vw,72px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--vino-900);color:#fff;font-family:"Archivo",system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:#fff;color:var(--rojo)}
+  h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;font-weight:520;line-height:1;letter-spacing:-.025em;font-optical-sizing:auto}
+  .mono{font-family:"JetBrains Mono",monospace}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+  /* ===== TOP NAV ===== */
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(18px,4vw,42px);transition:.5s var(--ease)}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand img{width:32px;height:32px}
+  .brand b{font-family:"Archivo";font-weight:700;font-size:13px;letter-spacing:.03em;color:#fff}
+  .brand .tag{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#fff;border-left:1px solid rgba(255,255,255,.45);padding-left:11px;opacity:.85}
+  @media(max-width:640px){.brand .tag{display:none}}
+  .nav-actions{display:flex;align-items:center;gap:12px}
+  .icon-btn{display:inline-flex;align-items:center;gap:9px;font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(255,255,255,.45);color:#fff;background:transparent;border-radius:100px;padding:9px 16px;cursor:pointer;transition:.3s var(--ease)}
+  .icon-btn:hover{background:#fff;color:var(--rojo);border-color:#fff}
+  .menu-btn .dots{display:flex;gap:3px}.menu-btn .dots i{width:4px;height:4px;border-radius:50%;background:currentColor;display:block}
+  @media(max-width:520px){.snd span:last-child{display:none}}
+
+  /* overlay */
+  .overlay{position:fixed;inset:0;z-index:70;background:var(--vino-900);transform:translateY(-100%);transition:transform .7s var(--ease);display:flex;flex-direction:column;overflow-y:auto}
+  .overlay.open{transform:none}
+  .overlay-top{display:flex;align-items:center;justify-content:space-between;padding:18px clamp(18px,4vw,42px)}
+  .close-btn{font-family:"JetBrains Mono";font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.4);border-radius:100px;padding:9px 18px;cursor:pointer;transition:.3s var(--ease)}
+  .close-btn:hover{background:var(--rojo);border-color:var(--rojo)}
+  .overlay-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(16px,3vw,36px) clamp(18px,4vw,42px)}
+  .ov-item{display:flex;align-items:center;gap:clamp(16px,3vw,34px);padding:clamp(11px,1.5vw,18px) 8px;border-top:1px solid rgba(255,255,255,.12);cursor:pointer;transition:.4s var(--ease)}
+  .ov-item:last-child{border-bottom:1px solid rgba(255,255,255,.12)}
+  .ov-item.active{background:rgba(255,255,255,.05)}
+  .ov-item .thumb{width:clamp(54px,7vw,88px);height:clamp(40px,5vw,60px);border-radius:9px;object-fit:cover;flex-shrink:0;filter:grayscale(.4) brightness(.85);transition:.45s var(--ease)}
+  .ov-item .swt{width:clamp(54px,7vw,88px);height:clamp(40px,5vw,60px);border-radius:9px;flex-shrink:0;background:radial-gradient(circle at 60% 30%,#B02A28,#B02A28)}
+  .ov-item .lab{font-family:"Fraunces";font-size:clamp(26px,4.6vw,54px);font-weight:480;color:#fff;letter-spacing:-.02em;line-height:1;transition:.4s var(--ease)}
+  .ov-item .desc{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.1em;color:rgba(255,255,255,.5);text-transform:uppercase;margin-left:auto;text-align:right;display:none}
+  @media(min-width:900px){.ov-item .desc{display:block}}
+  .ov-item .idx{font-family:"JetBrains Mono";font-size:12px;color:var(--ocre);width:30px;flex-shrink:0}
+  .ov-item:hover{padding-left:24px}.ov-item:hover .lab{color:var(--ocre)}.ov-item:hover .thumb{filter:none;transform:scale(1.05)}
+
+  /* ===== PROLOGUE / HERO ===== */
+  .prologue{position:relative;height:100svh;min-height:680px;overflow:hidden;background:var(--rojo);display:flex;align-items:center;justify-content:center}
+  .prologue::before{content:"";position:absolute;inset:-2%;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(176,42,40,.3),transparent 70%),radial-gradient(circle at 30% 80%,rgba(176,42,40,.5),transparent 50%);pointer-events:none;mix-blend-mode:multiply}
+  .pulse{position:absolute;left:50%;top:50%;width:300px;height:300px;border:1px solid rgba(255,255,255,.18);border-radius:50%;transform:translate(-50%,-50%);animation:pulseRing 3s var(--ease) infinite}
+  .pulse.p2{animation-delay:1s;width:500px;height:500px}
+  .pulse.p3{animation-delay:2s;width:760px;height:760px}
+  @keyframes pulseRing{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}30%{opacity:.6}100%{transform:translate(-50%,-50%) scale(1.4);opacity:0}}
+  .pcontent{position:relative;z-index:3;text-align:center;padding:0 24px;max-width:1100px}
+  .pcontent .eye{font-family:"JetBrains Mono";font-size:clamp(11px,1.3vw,13px);letter-spacing:.32em;text-transform:uppercase;color:#fff;margin-bottom:clamp(18px,2.5vw,32px);opacity:.92}
+  .pcontent h1{color:#fff;font-size:clamp(54px,12vw,178px);font-weight:540;line-height:.9;letter-spacing:-.035em;text-wrap:balance}
+  .pcontent h1 em{font-style:italic;font-weight:400}
+  .pcontent .sub{color:rgba(255,255,255,.86);max-width:46ch;margin:clamp(22px,3vw,34px) auto 0;font-size:clamp(15px,1.7vw,19px);font-weight:380}
+
+  /* big sound toggle (the protagonist) */
+  .bigsnd{margin-top:clamp(34px,5vw,52px);display:inline-flex;align-items:center;gap:18px;padding:14px 30px 14px 18px;background:rgba(0,0,0,.25);backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,.45);border-radius:100px;color:#fff;font-family:"JetBrains Mono";font-size:12px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:.4s var(--ease);font-weight:500}
+  .bigsnd:hover{background:rgba(255,255,255,.12);border-color:#fff}
+  .bigsnd.on{background:#fff;color:var(--rojo);border-color:#fff;box-shadow:0 0 0 8px rgba(255,255,255,.18)}
+  .bigsnd .icon{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;transition:.3s var(--ease)}
+  .bigsnd.on .icon{background:var(--rojo);color:#fff}
+  .bigsnd .icon svg{width:18px;height:18px;fill:currentColor}
+  .bigsnd .bars{display:flex;align-items:flex-end;gap:3px;height:18px}
+  .bigsnd .bars i{width:3px;background:currentColor;height:30%;border-radius:2px}
+  .bigsnd.on .bars i{animation:eq .9s ease-in-out infinite}
+  .bigsnd.on .bars i:nth-child(2){animation-delay:.15s}
+  .bigsnd.on .bars i:nth-child(3){animation-delay:.3s}
+  .bigsnd.on .bars i:nth-child(4){animation-delay:.45s}
+  @keyframes eq{0%,100%{height:25%}50%{height:100%}}
+  .pcontent .smallnote{margin-top:18px;font-family:"JetBrains Mono";font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+
+  .scrollcue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:3;color:#fff;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;opacity:.85}
+  .scrollcue .line{width:1px;height:44px;background:linear-gradient(#fff,transparent);animation:cue 2.2s var(--ease) infinite}
+  @keyframes cue{0%{transform:scaleY(.2);transform-origin:top;opacity:0}40%{opacity:1}100%{transform:scaleY(1);transform-origin:top;opacity:0}}
+
+  /* ===== CINEMATIC ACTS ===== */
+  .acts{position:relative}
+  .stage{position:sticky;top:0;height:100svh;overflow:hidden}
+  .stage-bg{position:absolute;inset:0}
+  .stage-bg .frame{position:absolute;inset:0;opacity:1;z-index:1}
+  .stage-bg .frame.on{z-index:5}
+  .stage-bg .frame.act0{background:radial-gradient(circle at 50% 45%,#B02A28,#B02A28 75%)}
+  .stage-bg .frame.act1{background:#B02A28}
+  .stage-bg .frame.act1::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(176,42,40,.4),transparent 60%);animation:beat 1.05s var(--ease) infinite}
+  .stage-bg .frame.act2 img,.stage-bg .frame.act3 img,.stage-bg .frame.act4 img{width:100%;height:100%;object-fit:cover}
+  .stage-bg .frame.act2::after,.stage-bg .frame.act3::after,.stage-bg .frame.act4::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(176,42,40,.55),rgba(176,42,40,.7));z-index:2}
+  .stage-bg .frame.act4::after{background:linear-gradient(180deg,rgba(176,42,40,.5),rgba(154,34,32,.78))}
+  @keyframes beat{0%,100%{transform:scale(.95);opacity:.7}45%{transform:scale(1.05);opacity:1}}
+
+  /* drum visual */
+  .drum{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .drum .ring{position:absolute;border:1.5px solid rgba(255,255,255,.5);border-radius:50%;width:200px;height:200px;animation:drumPulse 1.05s var(--ease) infinite}
+  .drum .ring.r2{animation-delay:-.35s;border-color:rgba(176,42,40,.6)}
+  .drum .ring.r3{animation-delay:-.7s;border-color:rgba(233,162,74,.4)}
+  @keyframes drumPulse{0%{transform:scale(.2);opacity:0}25%{opacity:.9}100%{transform:scale(3);opacity:0}}
+  .drum .core{width:60px;height:60px;border-radius:50%;background:var(--rojo);box-shadow:0 0 60px 20px rgba(176,42,40,.6);animation:core 1.05s var(--ease) infinite}
+  @keyframes core{0%,100%{transform:scale(1)}50%{transform:scale(1.25);box-shadow:0 0 100px 35px rgba(226,58,51,.7)}}
+
+  /* equalizer (hinchada) */
+  .eqviz{position:absolute;inset:auto 0 12vh 0;display:flex;justify-content:center;gap:6px;pointer-events:none;z-index:2;align-items:flex-end;padding:0 30px}
+  .eqviz i{width:8px;background:rgba(255,255,255,.85);border-radius:4px 4px 0 0;box-shadow:0 0 18px rgba(255,255,255,.5)}
+  .eqviz i:nth-child(odd){background:rgba(255,255,255,.65)}
+  @media(max-width:760px){.eqviz{gap:4px}.eqviz i{width:5px}}
+
+  /* bengala smoke */
+  .smoke{position:absolute;inset:0;pointer-events:none;z-index:2}
+  .smoke span{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(226,58,51,.5),transparent 60%);filter:blur(40px);animation:smokeRise 8s var(--ease) infinite}
+  .smoke span.s1{left:10%;bottom:-100px;animation-delay:0s}
+  .smoke span.s2{left:40%;bottom:-100px;animation-delay:-2s;background:radial-gradient(circle,rgba(255,255,255,.3),transparent 60%)}
+  .smoke span.s3{left:65%;bottom:-100px;animation-delay:-4s;background:radial-gradient(circle,rgba(226,58,51,.6),transparent 60%)}
+  .smoke span.s4{left:85%;bottom:-100px;animation-delay:-6s;background:radial-gradient(circle,rgba(255,255,255,.25),transparent 60%)}
+  @keyframes smokeRise{0%{transform:translateY(0) scale(.6);opacity:0}30%{opacity:.7}100%{transform:translateY(-120vh) scale(1.6);opacity:0}}
+
+  /* familia escudo */
+  .familyShield{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:clamp(120px,16vw,200px);opacity:.92;filter:drop-shadow(0 14px 40px rgba(0,0,0,.5));z-index:2}
+
+  /* lines (overlay text per act) */
+  .stage-lines{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;padding:0 clamp(22px,6vw,80px);text-align:center;pointer-events:none}
+  .actline{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(96vw,1100px);display:none}
+  .actline.on{display:block}
+  .actline .label{font-family:"JetBrains Mono";font-size:clamp(11px,1.2vw,13px);letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:clamp(18px,2.5vw,30px);display:flex;align-items:center;justify-content:center;gap:14px}
+  .actline .label::before,.actline .label::after{content:"";width:34px;height:1px;background:rgba(255,255,255,.45)}
+  .actline h2{font-family:"Fraunces";font-size:clamp(38px,9vw,130px);font-weight:500;color:#fff;letter-spacing:-.03em;line-height:.95;text-wrap:balance}
+  .actline h2 em{font-style:italic;font-weight:380}
+  .actline .accent{color:#FFD9A0}
+  .actline p{margin-top:clamp(18px,2.5vw,30px);font-family:"Archivo";font-size:clamp(16px,1.7vw,20px);color:rgba(255,255,255,.85);max-width:46ch;margin-left:auto;margin-right:auto;font-weight:380}
+
+  /* fixed UI overlays */
+  .actcounter{position:fixed;left:clamp(16px,3vw,32px);bottom:28px;z-index:40;font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.16em;color:#fff;mix-blend-mode:difference;opacity:0;transition:opacity .4s}
+  .actcounter.show{opacity:.95}
+  .actdots{position:fixed;right:clamp(16px,2.4vw,32px);top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:13px;mix-blend-mode:difference;opacity:0;transition:opacity .4s}
+  .actdots.show{opacity:1}
+  .actdots .d{width:8px;height:8px;border-radius:50%;border:1.5px solid #fff;opacity:.45;transition:.3s var(--ease)}
+  .actdots .d.on{opacity:1;background:#fff;transform:scale(1.3)}
+
+  /* ===== CLOSING ===== */
+  .closing{position:relative;min-height:100svh;background:var(--rojo);overflow:hidden;display:flex;align-items:center;padding:100px 0}
+  .closing::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--vino-900) 0%,var(--rojo) 14%,var(--rojo) 100%)}
+  .closing .cwrap{position:relative;z-index:2}
+  .closing .eye{font-family:"JetBrains Mono";font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:#fff;margin-bottom:30px;opacity:.92;display:flex;align-items:center;gap:14px}
+  .closing .eye::before{content:"";width:34px;height:1.5px;background:#fff}
+  .closing h2{color:#fff;font-size:clamp(46px,9vw,148px);font-weight:520;line-height:1.0;letter-spacing:-.035em;text-wrap:balance;margin-bottom:clamp(28px,4vw,46px)}
+  .closing h2 em{font-style:italic;font-weight:400}
+  .closing .sub{color:rgba(255,255,255,.85);max-width:50ch;margin-top:0;font-size:clamp(17px,2vw,21px);font-weight:380}
+  .closing .acts-cta{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+  .closing .btn{font-family:"Archivo";font-weight:600;font-size:15px;letter-spacing:.01em;border-radius:100px;padding:15px 28px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:.35s var(--ease);border:1.5px solid transparent}
+  .closing .btn-primary{background:#fff;color:var(--rojo)}
+  .closing .btn-primary:hover{background:var(--crema);transform:translateY(-2px);box-shadow:0 18px 38px -16px rgba(0,0,0,.5)}
+  .closing .btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
+  .closing .btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.12)}
+  .closing-crest{position:absolute;right:5vw;top:50%;transform:translateY(-50%);width:clamp(180px,32vw,460px);opacity:.12;z-index:1}
+  @media(max-width:880px){.closing-crest{opacity:.08;right:-10vw}}
+
+  /* pager + footer */
+  .pager{border-top:1px solid rgba(255,255,255,.18);display:grid;grid-template-columns:1fr 1fr;background:var(--vino-900)}
+  .pager a{padding:clamp(28px,4vw,48px) var(--pad);transition:background .4s var(--ease);display:flex;flex-direction:column;gap:8px}
+  .pager a:hover{background:rgba(255,255,255,.05)}
+  .pager a.next{text-align:right;border-left:1px solid rgba(255,255,255,.18)}
+  .pager .dir{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+  .pager .ttl{font-family:"Fraunces";font-size:clamp(24px,3.4vw,40px);font-weight:500;letter-spacing:-.01em;color:#fff}
+  .pager a:hover .ttl{color:var(--ocre)}
+
+  footer.foot{background:#B02A28;color:rgba(255,255,255,.86);padding:60px 0 38px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+  @media(max-width:860px){.foot-grid{grid-template-columns:1fr 1fr;gap:30px}}
+  @media(max-width:520px){.foot-grid{grid-template-columns:1fr}}
+  .foot .lg{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .foot .lg img{width:40px;height:40px;background:#fff;border-radius:8px;padding:5px}
+  .foot .lg b{font-family:"Fraunces";font-size:18px;font-weight:520;color:#fff}
+  .foot p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.65)}
+  .foot h5{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ocre);margin-bottom:14px}
+  .foot ul{list-style:none}.foot ul li{padding:5px 0;font-size:14px;color:rgba(255,255,255,.75)}
+  .foot ul li a:hover{color:#fff;text-decoration:underline}
+  .foot .cta{margin-top:18px;display:inline-flex;align-items:center;gap:10px;background:var(--rojo);color:#fff;font-family:"Archivo";font-weight:600;font-size:14px;border-radius:100px;padding:11px 20px;transition:.35s var(--ease)}
+  .foot .cta:hover{background:var(--rojo-deep)}
+  .foot .copy{border-top:1px solid rgba(255,255,255,.12);margin-top:42px;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:"JetBrains Mono";font-size:11px;color:rgba(255,255,255,.45)}
+
+  /* scroll progress */
+  .progress{position:fixed;top:0;left:0;height:3px;background:#fff;z-index:65;width:0;transition:width .1s linear}
+
+  @media(prefers-reduced-motion:reduce){
+    .pulse,.drum .ring,.drum .core,.smoke span,.stage-bg .frame.act1::after{animation:none !important}
+  }
+</style>
+</head>
+<body id="top">
+<div class="progress" id="progress"></div>
+
+<!-- NAV -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html"><img src="assets/logo-jcs.png" alt="Escudo JCS" /><b>JOCKEY CLUB DE SALTA</b><span class="tag">06 · Sentir el Rojo</span></a>
+  <div class="nav-actions">
+    <button class="icon-btn menu-btn" id="openMenu">Menú <span class="dots"><i></i><i></i><i></i></span></button>
+  </div>
+</header>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="overlay-top">
+    <a class="brand" href="index.html"><img src="assets/logo-jcs.png" alt="JCS" style="width:32px;height:32px" /><b>JOCKEY CLUB DE SALTA</b></a>
+    <button class="close-btn" id="closeMenu">Cerrar ✕</button>
+  </div>
+  <div class="overlay-body">
+    <a class="ov-item" href="historia-viva.html"><span class="idx">01</span><img class="thumb" src="assets/plantel-m15.png" alt="" /><span class="lab">Historia viva</span><span class="desc">1965 → hoy</span></a>
+    <a class="ov-item" href="las-camadas.html"><span class="idx">02</span><span class="swt"></span><span class="lab">Las camadas</span><span class="desc">La constelación</span></a>
+    <a class="ov-item" href="los-espacios.html"><span class="idx">03</span><img class="thumb" src="assets/casa-club.png" alt="" /><span class="lab">Los espacios</span><span class="desc">Cancha 1 · La casa roja</span></a>
+    <a class="ov-item" href="vida-social.html"><span class="idx">04</span><img class="thumb" src="assets/tercer-tiempo.png" alt="" /><span class="lab">Vida social</span><span class="desc">El tercer tiempo</span></a>
+    <a class="ov-item" href="las-disciplinas.html"><span class="idx">05</span><img class="thumb" src="assets/golf.png" alt="" /><span class="lab">Disciplinas</span><span class="desc">Seis deportes</span></a>
+    <a class="ov-item active" href="#"><span class="idx">06</span><img class="thumb" src="assets/banderazo.png" alt="" /><span class="lab">Sentir el Rojo</span><span class="desc">La experiencia</span></a>
+  </div>
+</div>
+
+<!-- ===== PROLOGUE ===== -->
+<section class="prologue" data-screen-label="Sentir · Prólogo">
+  <span class="pulse"></span><span class="pulse p2"></span><span class="pulse p3"></span>
+  <div class="pcontent">
+    <div class="eye">06 · Cierre · El paisaje sonoro</div>
+    <h1>Sentir<br /><em>el Rojo.</em></h1>
+    <p class="sub">No es una sección. Es la experiencia que el club te debe. Cinco minutos. Encendé el sonido y bajá.</p>
+    <button class="bigsnd" id="bigSnd" role="switch" aria-checked="false">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg></span>
+      <span>Encender sonido</span>
+      <span class="bars"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <div class="smallnote">El sonido es opcional, pero ayuda</div>
+  </div>
+</section>
+
+<!-- ===== CINEMATIC ACTS ===== -->
+<section class="acts" id="acts" data-screen-label="Sentir · Actos">
+  <div class="stage">
+    <div class="stage-bg" id="stageBg">
+      <div class="frame act0 on" data-i="0"></div>
+      <div class="frame act1" data-i="1"></div>
+      <div class="frame act2" data-i="2"><img src="assets/salida-plantel.png" alt="" /></div>
+      <div class="frame act3" data-i="3"><img src="assets/banderazo.png" alt="" /></div>
+      <div class="frame act4" data-i="4"><img src="assets/banderazo.png" alt="" /></div>
+    </div>
+    <!-- per-act visuals -->
+    <div class="drum" id="drum" style="display:none">
+      <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+      <span class="core"></span>
+    </div>
+    <div class="eqviz" id="eqviz" style="display:none"></div>
+    <div class="smoke" id="smoke" style="display:none"><span class="s1"></span><span class="s2"></span><span class="s3"></span><span class="s4"></span></div>
+    <img class="familyShield" id="familyShield" src="assets/logo-jcs.png" alt="Escudo JCS" style="display:none" />
+
+    <div class="stage-lines" id="stageLines">
+      <div class="actline on" data-i="0">
+        <div class="label">Acto 00</div>
+        <h2>Cerrá los ojos.<br />Después, abrilos.</h2>
+        <p>Es sábado, son las cuatro de la tarde, y en Limache empieza a pasar lo de siempre.</p>
+      </div>
+      <div class="actline coming" data-i="1">
+        <div class="label">Acto 01 · El redoblante</div>
+        <h2>Un <em>golpe.</em><br />Después otro. Y otro.</h2>
+        <p>El redoblante de la murga arranca el pulso del estadio. Todavía no salieron los jugadores.</p>
+      </div>
+      <div class="actline coming" data-i="2">
+        <div class="label">Acto 02 · La hinchada</div>
+        <h2>Mil voces<br />se vuelven <em>una.</em></h2>
+        <p>El cántico empieza atrás, en los populares, y avanza como una ola hasta llegar a la platea.</p>
+      </div>
+      <div class="actline coming" data-i="3">
+        <div class="label">Acto 03 · La bengala</div>
+        <h2>El cielo se <span class="accent">prende.</span></h2>
+        <p>Cuatro bengalas, casi al unísono. El humo rojo se cuela en la cancha. El árbitro no puede tocar el silbato.</p>
+      </div>
+      <div class="actline coming" data-i="4">
+        <div class="label">Acto 04 · La familia</div>
+        <h2>Y ahí está, otra vez:<br />más que un club,<br /><em>una familia.</em></h2>
+        <p>Los pibes, los viejos, los nuevos, los que vinieron una sola vez. Todos visten la misma camiseta.</p>
+      </div>
+    </div>
+  </div>
+  <div id="steps"></div>
+</section>
+
+<div class="actcounter" id="counter">00 / 05</div>
+<div class="actdots" id="dots"></div>
+
+<!-- ===== CLOSING ===== -->
+<section class="closing" data-screen-label="Sentir · Cierre">
+  <img class="closing-crest" src="assets/logo-jcs.png" alt="" />
+  <div class="wrap cwrap">
+    <div class="eye">Y eso es ser del Jockey</div>
+    <h2>Bienvenido <em>a la familia.</em></h2>
+    <p class="sub">Recorriste la web entera. Lo que sigue es venirte a la Cancha 1 un sábado. No hace falta entender de rugby — alcanza con dejarse llevar.</p>
+    <div class="acts-cta">
+      <a class="btn btn-primary" href="#">Hacete socio <span>→</span></a>
+      <a class="btn btn-outline" href="index.html">Volver al inicio</a>
+    </div>
+  </div>
+</section>
+
+<!-- PAGER -->
+<nav class="pager">
+  <a href="las-disciplinas.html"><span class="dir">← Volver · 05</span><span class="ttl">Las disciplinas</span></a>
+  <a class="next" href="index.html"><span class="dir">Empezar de nuevo →</span><span class="ttl">Home · Manifiesto</span></a>
+</nav>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="lg"><img src="assets/logo-jcs.png" alt="JCS" /><b>Jockey Club de Salta</b></div>
+        <p>Más que un club, una familia. El Rojo y Blanco desde 1965.</p>
+        <a class="cta" href="#">Sumate · Hacete socio →</a>
+      </div>
+      <div><h5>Sede Limache</h5><ul><li>Ruta 51 km 1</li><li>Av. Kennedy s/n</li><li>Salta, Argentina</li></ul></div>
+      <div><h5>Anexo Las Costas</h5><ul><li>San Lorenzo</li><li>Tel · WhatsApp</li><li>hola@jockeysalta.ar</li></ul></div>
+      <div><h5>Seguinos</h5><ul><li><a href="#">@jockeyclubsalta</a></li><li><a href="#">@jcs_hockey</a></li></ul></div>
+    </div>
+    <div class="copy"><span>© 2026 Jockey Club de Salta</span><span>06 · Sentir el Rojo · diseño de alta fidelidad</span></div>
+  </div>
+</footer>
+
+<script>
+  // menu
+  const overlay=document.getElementById('overlay');
+  document.getElementById('openMenu').addEventListener('click',()=>{overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'});
+  const closeM=()=>{overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=''};
+  document.getElementById('closeMenu').addEventListener('click',closeM);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+
+  // progress
+  const progress=document.getElementById('progress');
+  window.addEventListener('scroll',()=>{
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    progress.style.width=(h>0?(window.scrollY/h*100):0)+'%';
+  },{passive:true});
+
+  // build eqviz bars
+  const eq=document.getElementById('eqviz');
+  for(let i=0;i<48;i++){const b=document.createElement('i');b.style.height=(15+Math.random()*30)+'%';eq.appendChild(b)}
+
+  // ===== Web Audio synthesized layers =====
+  let ac=null, masterGain=null;
+  const layers={drum:null,crowd:null,bengala:null,chord:null};
+  let active=-1;
+  function ensureAudio(){
+    if(ac)return ac;
+    ac=new (window.AudioContext||window.webkitAudioContext)();
+    masterGain=ac.createGain();masterGain.gain.value=0;masterGain.connect(ac.destination);
+    // drum: periodic low thump
+    const drumGain=ac.createGain();drumGain.gain.value=0;drumGain.connect(masterGain);
+    layers.drum={gain:drumGain,timer:null,start(){if(this.timer)return;this.gain.gain.setTargetAtTime(.4,ac.currentTime,.3);const tick=()=>{const t=ac.currentTime;const o=ac.createOscillator();o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(40,t+.15);const g=ac.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.85,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+.25);o.connect(g);g.connect(this.gain);o.start(t);o.stop(t+.3)};tick();this.timer=setInterval(tick,580)},stop(){if(this.timer)clearInterval(this.timer);this.timer=null;this.gain.gain.setTargetAtTime(0,ac.currentTime,.3)}};
+    // crowd: filtered noise
+    const crowdGain=ac.createGain();crowdGain.gain.value=0;crowdGain.connect(masterGain);
+    const noiseBuf=ac.createBuffer(1,ac.sampleRate*2,ac.sampleRate);const nd=noiseBuf.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=(Math.random()*2-1)*.6;
+    const cn=ac.createBufferSource();cn.buffer=noiseBuf;cn.loop=true;const cf=ac.createBiquadFilter();cf.type='bandpass';cf.frequency.value=480;cf.Q.value=.7;cn.connect(cf);cf.connect(crowdGain);cn.start();
+    // subtle modulation
+    const lfo=ac.createOscillator();lfo.frequency.value=.4;const lfoG=ac.createGain();lfoG.gain.value=180;lfo.connect(lfoG);lfoG.connect(cf.frequency);lfo.start();
+    layers.crowd={gain:crowdGain,start(){this.gain.gain.setTargetAtTime(.5,ac.currentTime,.4)},stop(){this.gain.gain.setTargetAtTime(0,ac.currentTime,.4)}};
+    // bengala: noise hiss bursts
+    const bengGain=ac.createGain();bengGain.gain.value=0;bengGain.connect(masterGain);
+    const bn=ac.createBufferSource();bn.buffer=noiseBuf;bn.loop=true;const bf=ac.createBiquadFilter();bf.type='highpass';bf.frequency.value=2000;bn.connect(bf);bf.connect(bengGain);bn.start();
+    layers.bengala={gain:bengGain,start(){this.gain.gain.setTargetAtTime(.18,ac.currentTime,.3)},stop(){this.gain.gain.setTargetAtTime(0,ac.currentTime,.3)}};
+    // chord: warm major triad
+    const chordGain=ac.createGain();chordGain.gain.value=0;chordGain.connect(masterGain);
+    [220,261.63,329.63].forEach(f=>{const o=ac.createOscillator();o.type='sine';o.frequency.value=f;const g=ac.createGain();g.gain.value=.18;o.connect(g);g.connect(chordGain);o.start()});
+    layers.chord={gain:chordGain,start(){this.gain.gain.setTargetAtTime(.4,ac.currentTime,.6)},stop(){this.gain.gain.setTargetAtTime(0,ac.currentTime,.5)}};
+    return ac;
+  }
+
+  let soundOn=false;
+  const bigSnd=document.getElementById('bigSnd');
+  bigSnd.addEventListener('click',async()=>{
+    ensureAudio();
+    if(ac.state==='suspended')await ac.resume();
+    soundOn=!soundOn;
+    bigSnd.classList.toggle('on',soundOn);
+    bigSnd.setAttribute('aria-checked',soundOn?'true':'false');
+    bigSnd.querySelector('span:nth-child(2)').textContent=soundOn?'Sonido encendido':'Encender sonido';
+    masterGain.gain.setTargetAtTime(soundOn?.5:0, ac.currentTime, .4);
+    // re-engage current act layer
+    if(soundOn) setActAudio(currentAct);
+    else stopAllAudio();
+  });
+  function stopAllAudio(){Object.values(layers).forEach(l=>l&&l.stop&&l.stop())}
+  function setActAudio(i){
+    if(!ac||!soundOn)return;
+    stopAllAudio();
+    if(i===1)layers.drum.start();
+    if(i===2){layers.drum.start();layers.crowd.start()}
+    if(i===3){layers.crowd.start();layers.bengala.start()}
+    if(i===4)layers.chord.start();
+  }
+
+  // ===== scrollytelling =====
+  const lines=[...document.querySelectorAll('.actline')];
+  const frames=[...document.querySelectorAll('.stage-bg .frame')];
+  const N=lines.length;
+  const acts=document.getElementById('acts');
+  const steps=document.getElementById('steps');
+  steps.style.height=(N*82)+'vh';
+  const dotsWrap=document.getElementById('dots');
+  lines.forEach((_,i)=>{const d=document.createElement('span');d.className='d'+(i===0?' on':'');dotsWrap.appendChild(d)});
+  const dots=[...dotsWrap.children];
+  const counter=document.getElementById('counter');
+  const drum=document.getElementById('drum');
+  const eqvizEl=document.getElementById('eqviz');
+  const smoke=document.getElementById('smoke');
+  const familyShield=document.getElementById('familyShield');
+  let currentAct=0;
+  function setAct(i){
+    if(i===currentAct)return;
+    currentAct=i;
+    lines.forEach((l,k)=>{
+      l.classList.remove('on','was','coming');
+      if(k===i)l.classList.add('on');
+      else if(k<i)l.classList.add('was');
+      else l.classList.add('coming');
+    });
+    frames.forEach((f,k)=>f.classList.toggle('on',k===i));
+    // per-act visuals
+    drum.style.display=(i===1?'flex':'none');
+    eqvizEl.style.display=(i===2?'flex':'none');
+    smoke.style.display=(i===3?'block':'none');
+    familyShield.style.display=(i===4?'block':'none');
+    // animate eq bars
+    if(i===2){
+      [...eqvizEl.children].forEach((bar,idx)=>{
+        bar.style.animation=`bar${idx%4} 1.${Math.floor(Math.random()*4+2)}s ease-in-out infinite alternate`;
+      });
+    }
+    dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+    counter.textContent=String(i).padStart(2,'0')+' / '+String(N-1).padStart(2,'0');
+    setActAudio(i);
+  }
+  // dynamic keyframes for eqviz bars
+  const styleEl=document.createElement('style');
+  let kf='';for(let i=0;i<4;i++){const a=20+Math.random()*30;const b=70+Math.random()*30;kf+=`@keyframes bar${i}{0%{height:${a}%}100%{height:${b}%}}`;}
+  styleEl.textContent=kf;document.head.appendChild(styleEl);
+
+  function onScrollActs(){
+    const rect=acts.getBoundingClientRect();
+    const total=acts.offsetHeight-window.innerHeight;
+    const passed=Math.min(Math.max(-rect.top,0),total);
+    const p=total>0?passed/total:0;
+    const inView=rect.top<window.innerHeight*0.5 && rect.bottom>window.innerHeight*0.5;
+    counter.classList.toggle('show',inView);
+    dotsWrap.classList.toggle('show',inView);
+    let idx=Math.floor(p*N);
+    if(idx>N-1)idx=N-1;if(idx<0)idx=0;
+    setAct(idx);
+  }
+  window.addEventListener('scroll',onScrollActs,{passive:true});
+  window.addEventListener('resize',onScrollActs);
+  onScrollActs();
+</script>
+</body>
+</html>
