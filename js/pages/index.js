@@ -1,19 +1,17 @@
-/* Home — scrollytelling pinned: el hero es la escena 0.
-   Cada escena cruza con crossfade + Ken Burns; el texto entra con fade+translateY. */
+/* Home — manifiesto scrollytelling (stage pinned + líneas por scroll) */
 (() => {
-  const scenes = [...document.querySelectorAll("#lines .scene")];
+  const lines = [...document.querySelectorAll(".line")];
   const frames = [...document.querySelectorAll(".stage-bg .frame")];
   const mani = document.getElementById("manifiesto");
   const dotsWrap = document.getElementById("dots");
   const counter = document.getElementById("counter");
   const steps = document.getElementById("steps");
-  const scrollcue = document.getElementById("scrollcue");
-  if (!scenes.length || !mani || !dotsWrap || !counter) return;
+  if (!lines.length || !mani || !dotsWrap || !counter) return;
 
-  const N = scenes.length;
-  if (steps) steps.style.height = N * 80 + "vh";
+  const N = lines.length;
+  if (steps) steps.style.height = N * 78 + "vh";
 
-  scenes.forEach((_, i) => {
+  lines.forEach((_, i) => {
     const d = document.createElement("span");
     d.className = "d" + (i === 0 ? " on" : "");
     dotsWrap.appendChild(d);
@@ -25,16 +23,17 @@
   function setStep(i) {
     if (i === cur) return;
     cur = i;
-    scenes.forEach((s, k) => {
-      s.classList.remove("on", "was", "coming");
-      s.classList.add(k === i ? "on" : k < i ? "was" : "coming");
+    lines.forEach((l, k) => {
+      l.classList.remove("on", "was", "coming");
+      if (k === i) l.classList.add("on");
+      else if (k < i) l.classList.add("was");
+      else l.classList.add("coming");
     });
     frames.forEach((f, k) => f.classList.toggle("on", k === i));
     const act = frames[i] && frames[i].querySelector("img");
     if (act) { act.style.animation = "none"; act.offsetHeight; act.style.animation = ""; }
     dots.forEach((d, k) => d.classList.toggle("on", k === i));
     counter.textContent = String(i + 1).padStart(2, "0") + " / " + String(N).padStart(2, "0");
-    if (scrollcue) scrollcue.style.opacity = i === 0 ? "0.85" : "0";
   }
 
   function onScroll() {
