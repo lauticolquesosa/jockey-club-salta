@@ -1,6 +1,21 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/historia-viva", "destination": "/historia", "permanent": true },
+    { "source": "/las-camadas", "destination": "/camadas", "permanent": true },
+    { "source": "/los-espacios", "destination": "/espacios", "permanent": true },
+    { "source": "/vida-social", "destination": "/social", "permanent": true },
+    { "source": "/las-disciplinas", "destination": "/disciplinas", "permanent": true },
+    { "source": "/sentir-el-rojo", "destination": "/sentimiento", "permanent": true },
+    { "source": "/sistema-visual", "destination": "/sistema", "permanent": true }
+  ],
   "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }]
+    },
     {
       "source": "/assets/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
