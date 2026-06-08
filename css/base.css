@@ -73,8 +73,8 @@ html.js .reveal.d3{transition-delay:.3s}
 .icon-btn:hover{background:var(--rojo);color:#fff;border-color:var(--rojo);transform:translateY(-1px)}
 /* Hamburguesa mobile — botón cuadrado redondeado, tres líneas iguales (típico) */
 .menu-btn{width:48px;height:48px;padding:0;justify-content:center;border-radius:14px;border-color:rgba(42,35,32,.2);background:rgba(120,110,102,.07);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.menu-btn .dots{display:flex;flex-direction:column;align-items:center;gap:5px;width:22px}
-.menu-btn .dots i{width:22px;height:2.4px;border-radius:2px;background:currentColor;display:block;transition:transform .3s var(--ease)}
+.menu-btn .ham{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:22px;opacity:1}
+.menu-btn .ham i{width:22px;height:2.4px;border-radius:2px;background:currentColor;display:block;transition:transform .3s var(--ease)}
 .menu-btn:hover{transform:translateY(-1px)}
 .menu-btn:active{transform:scale(.94)}
 
