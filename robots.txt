@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jockey-club-salta.vercel.app/sitemap.xml
