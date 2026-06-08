@@ -19,6 +19,12 @@ body{background:var(--rojo);color:var(--tinta);font-family:"Archivo",system-ui,s
 .topbar.solid .icon-btn{border-color:rgba(42,35,32,.28);color:var(--tinta)}
 .icon-btn:hover{background:#fff;color:var(--rojo);border-color:#fff}
 .topbar.solid .icon-btn:hover{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+.mainnav a{color:#fff;transition:color .5s var(--ease)}
+.mainnav a::after{background:#fff}
+.mainnav a:hover{color:#fff;opacity:.85}
+.topbar.solid .mainnav a{color:var(--tinta)}
+.topbar.solid .mainnav a::after{background:var(--rojo)}
+.topbar.solid .mainnav a:hover{color:var(--rojo);opacity:1}
 .snd{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
 .snd .eq{display:flex;align-items:flex-end;gap:2.5px;height:14px}
 .overlay-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(20px,4vw,40px) clamp(18px,4vw,42px)}

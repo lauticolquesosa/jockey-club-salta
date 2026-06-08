@@ -52,8 +52,21 @@ html.js .reveal.d3{transition-delay:.3s}
 .nav-actions{display:flex;align-items:center;gap:12px}
 .icon-btn{display:inline-flex;align-items:center;gap:9px;font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(42,35,32,.28);color:var(--tinta);background:transparent;border-radius:100px;padding:9px 16px;cursor:pointer;transition:.3s var(--ease)}
 .icon-btn:hover{background:var(--rojo);color:#fff;border-color:var(--rojo)}
-.menu-btn .dots{display:flex;gap:3px}
-.menu-btn .dots i{width:4px;height:4px;border-radius:50%;background:currentColor;display:block}
+.menu-btn{padding:11px 13px}
+.menu-btn .dots{display:flex;flex-direction:column;gap:3.5px}
+.menu-btn .dots i{width:18px;height:2px;border-radius:2px;background:currentColor;display:block}
+
+/* ===== Nav inline (secciones escritas, sólo desktop) ===== */
+.mainnav{display:none}
+.mainnav a{position:relative;font-family:"Archivo";font-weight:500;font-size:13.5px;letter-spacing:.005em;color:var(--tinta);padding:7px 1px;white-space:nowrap;transition:color .3s var(--ease)}
+.mainnav a::after{content:"";position:absolute;left:0;bottom:2px;width:0;height:1.5px;background:var(--rojo);transition:width .35s var(--ease)}
+.mainnav a:hover,.mainnav a.active{color:var(--rojo)}
+.mainnav a:hover::after,.mainnav a.active::after{width:100%}
+@media(min-width:1024px){
+  .mainnav{display:flex;align-items:center;gap:clamp(14px,1.7vw,26px)}
+  .nav-actions .menu-btn{display:none}
+  .topbar .brand .tag{display:none}
+}
 .snd .eq{display:flex;align-items:flex-end;gap:2.5px;height:13px}
 .snd .eq i{width:2.5px;background:currentColor;height:30%;border-radius:2px}
 .snd.on .eq i{animation:eq .9s ease-in-out infinite}
