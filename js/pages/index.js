@@ -1,6 +1,26 @@
-/* Home — manifiesto scrollytelling (stage pinned + líneas por scroll) */
+/* Home — transición hero->manifiesto + manifiesto scrollytelling */
 (() => {
-  const lines = [...document.querySelectorAll(".line")];
+  // ===== Hero: el contenido se disuelve hacia arriba al scrollear,
+  // encadenando con el reveal del manifiesto (mismo lenguaje fade+translate) =====
+  const intro = document.querySelector(".intro");
+  const introContent = document.getElementById("introContent");
+  const scrollcue = document.querySelector(".scrollcue");
+  if (intro && introContent) {
+    const onHero = () => {
+      const h = intro.offsetHeight || window.innerHeight;
+      const p = Math.min(Math.max(window.scrollY / h, 0), 1);
+      const eased = p * p;
+      introContent.style.opacity = String(Math.max(0, 1 - eased * 1.1));
+      introContent.style.transform = `translateY(${-eased * 72}px) scale(${1 - eased * 0.04})`;
+      if (scrollcue) scrollcue.style.opacity = String(Math.max(0, 0.85 - p * 1.7));
+    };
+    onHero();
+    window.addEventListener("scroll", onHero, { passive: true });
+    window.addEventListener("resize", onHero);
+  }
+
+  // ===== Manifiesto: stage pinned + líneas que revelan por scroll =====
+  const lines = [...document.querySelectorAll("#lines .line")];
   const frames = [...document.querySelectorAll(".stage-bg .frame")];
   const mani = document.getElementById("manifiesto");
   const dotsWrap = document.getElementById("dots");
