@@ -50,46 +50,43 @@
   </div>
 </div>
 
-<!-- ===== INTRO HERO ===== -->
-<section class="intro" id="top" data-screen-label="Home · Intro">
-  <div class="intro-bg"><img src="assets/banderazo.png" alt="Banderazo en la Cancha 1" /></div>
-  <span class="fabric f1"></span><span class="fabric f2"></span><span class="fabric f3"></span>
-  <div class="intro-content" id="introContent">
-    <div class="crest-wrap a crest"><img src="assets/logo-jcs.png" alt="Escudo del Jockey Club de Salta" /></div>
-    <div class="kick a k">El Rojo y Blanco · Salta · desde 1965</div>
-    <h1 class="a t">¿Qué es ser <em>del Jockey?</em></h1>
-    <p class="sub a s">No se explica desde afuera. Se siente adentro. Bajá despacio: esto es un manifiesto.</p>
-  </div>
-  <div class="scrollcue"><span>Bajá</span><span class="line"></span></div>
-</section>
+<a id="top" aria-hidden="true"></a>
 
-<!-- ===== MANIFIESTO ===== -->
+<!-- ===== MANIFIESTO (el hero es la escena 0 del scrollytelling) ===== -->
 <section class="manifesto" id="manifiesto" data-screen-label="Home · Manifiesto">
   <div class="stage">
     <div class="stage-bg" id="stageBg">
-      <div class="frame on" data-i="0"><img src="assets/banderazo.png" alt="" /></div>
+      <div class="frame on" data-i="0"><img src="assets/banderazo.png" alt="Banderazo en la Cancha 1" /></div>
       <div class="frame" data-i="1"><img src="assets/tribuna.png" alt="" /></div>
       <div class="frame" data-i="2"><img src="assets/plantel-m15.png" alt="" /></div>
       <div class="frame" data-i="3"><img src="assets/salida-plantel.png" alt="" /></div>
       <div class="frame" data-i="4"><img src="assets/tercer-tiempo.png" alt="" /></div>
       <div class="frame" data-i="5"><img src="assets/casa-club.png" alt="" /></div>
       <div class="frame" data-i="6"><img src="assets/banderazo.png" alt="" /></div>
+      <div class="frame" data-i="7"><img src="assets/plantel-m15.png" alt="" /></div>
     </div>
     <div class="lines" id="lines">
-      <div class="line on" data-i="0">Acá no se viene <em>a mirar.</em></div>
-      <div class="line coming" data-i="1">Se viene <span class="accent">a pertenecer.</span></div>
-      <div class="line coming" data-i="2">Fuimos rayas.<br />Nos hicimos <em>cuadros.</em></div>
-      <div class="line coming" data-i="3">El redoblante que no afloja.<br />La <span class="accent">bengala</span> que tiñe el cielo.</div>
-      <div class="line coming" data-i="4">Y un tercer tiempo<br />que dura <em>más que el partido.</em></div>
-      <div class="line coming" data-i="5">Rojo y Blanco,<br />desde <span class="accent">1965.</span></div>
-      <div class="line coming" data-i="6">Más que un club,<br /><em>una familia.</em></div>
+      <div class="scene scene-hero on" data-i="0">
+        <div class="crest-wrap"><img src="assets/logo-jcs.png" alt="Escudo del Jockey Club de Salta" /></div>
+        <div class="kick">El Rojo y Blanco · Salta · desde 1965</div>
+        <h1>¿Qué es ser <em>del Jockey?</em></h1>
+        <p class="sub">No se explica desde afuera. Se siente adentro. Bajá despacio: esto es un manifiesto.</p>
+      </div>
+      <div class="scene line coming" data-i="1">Acá no se viene <em>a mirar.</em></div>
+      <div class="scene line coming" data-i="2">Se viene <span class="accent">a pertenecer.</span></div>
+      <div class="scene line coming" data-i="3">Fuimos rayas.<br />Nos hicimos <em>cuadros.</em></div>
+      <div class="scene line coming" data-i="4">El redoblante que no afloja.<br />La <span class="accent">bengala</span> que tiñe el cielo.</div>
+      <div class="scene line coming" data-i="5">Y un tercer tiempo<br />que dura <em>más que el partido.</em></div>
+      <div class="scene line coming" data-i="6">Rojo y Blanco,<br />desde <span class="accent">1965.</span></div>
+      <div class="scene line coming" data-i="7">Más que un club,<br /><em>una familia.</em></div>
     </div>
+    <div class="scrollcue" id="scrollcue"><span>Bajá</span><span class="line-cue"></span></div>
   </div>
   <!-- scroll steps -->
   <div id="steps"></div>
 </section>
 <div class="dots" id="dots"></div>
-<div class="mani-counter" id="counter">01 / 07</div>
+<div class="mani-counter" id="counter">01 / 08</div>
 
 <!-- ===== PUERTAS ===== -->
 <section class="puertas" data-screen-label="Home · Puertas">
