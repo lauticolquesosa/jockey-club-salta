@@ -8,11 +8,12 @@
   }
 body{background:var(--vino-bg);color:#fff;font-family:"Archivo",system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--ocre);color:var(--vino-bg)}
-.topbar.solid{background:rgba(28,5,4,.85);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(255,255,255,.06);padding-top:11px;padding-bottom:11px}
-.brand img{width:32px;height:32px;background:#fff;border-radius:7px;padding:3px}
-.brand b{font-family:"Archivo";font-weight:700;font-size:13px;letter-spacing:.03em;color:#fff}
-.brand .tag{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6);border-left:1px solid rgba(255,255,255,.2);padding-left:11px}
-.icon-btn{display:inline-flex;align-items:center;gap:9px;font-family:"JetBrains Mono";font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(255,255,255,.35);color:#fff;background:transparent;border-radius:100px;padding:9px 16px;cursor:pointer;transition:.3s var(--ease)}
+/* Header sobre fondo oscuro → glassy oscuro al hacer scroll */
+.topbar.solid{background:rgba(28,5,4,.78);-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);border-bottom-color:rgba(255,255,255,.08)}
+.brand img{background:#fff;border-radius:7px;padding:3px}
+.brand b{color:#fff}
+.brand .tag{color:rgba(255,255,255,.6);border-left-color:rgba(255,255,255,.2)}
+.icon-btn{border-color:rgba(255,255,255,.35);color:#fff}
 .icon-btn:hover{background:var(--ocre);color:var(--vino-bg);border-color:var(--ocre)}
 .mainnav a{color:#fff}
 .mainnav a::after{background:var(--ocre)}
